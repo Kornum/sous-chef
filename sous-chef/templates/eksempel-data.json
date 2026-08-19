@@ -1,0 +1,355 @@
+{
+ "id": "eksempel-foedselsdag",
+ "titel": "Fødselsdag lørdag",
+ "servering": [
+  {
+   "navn": "Kaffebord",
+   "kl": "14:00"
+  },
+  {
+   "navn": "Aftensmad",
+   "kl": "18:00"
+  }
+ ],
+ "indkoeb": {
+  "butik_lukker": "Føtex lukker kl. 22 i aften - ⚠-varerne skal med hjem i dag",
+  "afdelinger": [
+   {
+    "navn": "Frugt & grønt",
+    "varer": [
+     {
+      "id": "lime",
+      "navn": "Lime",
+      "maengde": "10 stk",
+      "note": "Ser forkert ud, men de går igen i raita, kachumber, dahl og drinken",
+      "kritisk": false,
+      "pris": 40
+     },
+     {
+      "id": "mynte",
+      "navn": "Mynte",
+      "maengde": "3 potter",
+      "note": "Raita, kachumber og børnedrinken",
+      "pris": 60
+     },
+     {
+      "id": "roedloeg",
+      "navn": "Rødløg",
+      "maengde": "6 stk",
+      "pris": 20
+     },
+     {
+      "id": "tomat",
+      "navn": "Tomater, faste",
+      "maengde": "8 stk",
+      "pris": 35
+     },
+     {
+      "id": "agurk",
+      "navn": "Agurk",
+      "maengde": "2 stk",
+      "pris": 30
+     },
+     {
+      "id": "ingefaer",
+      "navn": "Ingefær",
+      "maengde": "1 stor knold",
+      "pris": 15
+     },
+     {
+      "id": "hvidloeg",
+      "navn": "Hvidløg",
+      "maengde": "2 hele",
+      "pris": 12
+     }
+    ]
+   },
+   {
+    "navn": "Køl",
+    "varer": [
+     {
+      "id": "bloksmoer",
+      "navn": "Vegansk BLOK-smør (ikke bøtte)",
+      "maengde": "4 pakker",
+      "note": "Bøtte har for meget vand og kan ikke lamineres. Fire pakker fordi giflerne æder tre alene",
+      "kritisk": true,
+      "pris": 100
+     },
+     {
+      "id": "gaer",
+      "navn": "Gær",
+      "maengde": "2 pakker",
+      "kritisk": true,
+      "pris": 10
+     },
+     {
+      "id": "yoghurt",
+      "navn": "Plantebaseret yoghurt, usødet",
+      "maengde": "1 liter",
+      "pris": 35
+     }
+    ]
+   },
+   {
+    "navn": "Kolonial",
+    "varer": [
+     {
+      "id": "linser",
+      "navn": "Røde linser",
+      "maengde": "1 kg",
+      "pris": 35
+     },
+     {
+      "id": "basmati",
+      "navn": "Basmatiris",
+      "maengde": "1 kg",
+      "pris": 30
+     },
+     {
+      "id": "kokosfloede",
+      "navn": "Kokosfløde på dåse",
+      "maengde": "3 dåser",
+      "note": "Skal stå i køleskabet natten over før den kan piskes - derfor i dag",
+      "kritisk": true,
+      "pris": 45
+     },
+     {
+      "id": "sennepsfroe",
+      "navn": "Sorte sennepsfrø",
+      "maengde": "1 glas",
+      "pris": 20
+     },
+     {
+      "id": "spidskommen",
+      "navn": "Spidskommen, hel",
+      "maengde": "1 glas",
+      "pris": 15
+     },
+     {
+      "id": "gurkemeje",
+      "navn": "Gurkemeje",
+      "maengde": "1 glas",
+      "pris": 15
+     },
+     {
+      "id": "hvedemel",
+      "navn": "Hvedemel",
+      "maengde": "2 kg",
+      "pris": 20
+     },
+     {
+      "id": "farin",
+      "navn": "Brun farin",
+      "maengde": "500 g",
+      "pris": 15
+     },
+     {
+      "id": "kanel",
+      "navn": "Kanel",
+      "maengde": "1 glas",
+      "pris": 15
+     }
+    ]
+   },
+   {
+    "navn": "Brød",
+    "varer": [
+     {
+      "id": "naan",
+      "navn": "Naan",
+      "maengde": "12 stk",
+      "note": "Købt - to dejprojekter samme dag er ét for meget",
+      "pris": 75
+     }
+    ]
+   }
+  ]
+ },
+ "trin": [
+  {
+   "id": "t1",
+   "kl": "18:30",
+   "titel": "Rør gifle-dejen",
+   "ret": "Gifler",
+   "handling": "Mel, gær, sukker, salt, plantemælk og lidt blødt smør i skålen. Ælt til den er glat og elastisk.",
+   "kendetegn": "Æltet nok når du kan trække et stykke så tyndt at lys skinner igennem uden at det revner.",
+   "fejlkilde": {
+    "tekst": "Væsken må ikke være over 27°C. Vegansk smør smelter lavere end mælkesmør, og en varm dej suger smørret op i stedet for at danne lag.",
+    "kan_reddes": false
+   },
+   "timer_min": 10,
+   "opskrift": "gifler",
+   "aktiv_min": 12
+  },
+  {
+   "id": "t2",
+   "kl": "18:45",
+   "titel": "Dejen på køl",
+   "ret": "Gifler",
+   "handling": "Tryk dejen flad til en rektangel, film den, og sæt den i køleskabet.",
+   "kendetegn": "Kold hele vejen igennem - fast at trykke på, ikke fjedrende.",
+   "timer_min": 40,
+   "opskrift": "gifler",
+   "aktiv_min": 2
+  },
+  {
+   "id": "t3",
+   "kl": "18:50",
+   "titel": "Start dahlen (i dejens køletid)",
+   "ret": "Dahl",
+   "handling": "Løg, ingefær og hvidløg blødt i olie. Krydderier i, så linser og vand. Kog op, skru ned, låg på.",
+   "kendetegn": "Sennepsfrøene er klar når de popper - lyden er din timer.",
+   "fejlkilde": {
+    "tekst": "Skru ned FØR gurkemejen. Den brænder hurtigere end alt andet, og brændt gurkemeje er bittert på en måde der ikke kan reddes med salt, sukker eller citron. Hele gryden er tabt.",
+    "kan_reddes": false
+   },
+   "timer_min": 25,
+   "opskrift": "dahl",
+   "aktiv_min": 15
+  },
+  {
+   "id": "t4",
+   "kl": "19:25",
+   "titel": "Smørblokken",
+   "ret": "Gifler",
+   "handling": "Bank de kolde smørpakker ud til en 20x20 cm plade mellem to stykker bagepapir. Køl igen.",
+   "kendetegn": "Bøjelig som en tyk pap - knækker den, er den for kold; blank og fedtet, er den for varm.",
+   "fejlkilde": {
+    "tekst": "Vegansk smør har et snævert arbejdsvindue: knækker som glas koldt, fedtet efter få minutter varmt. Tag det ud 10 min før, og køl igen ved mindste fedtethed.",
+    "kan_reddes": true
+   },
+   "timer_min": 15,
+   "opskrift": "gifler",
+   "aktiv_min": 10
+  },
+  {
+   "id": "t5",
+   "kl": "19:45",
+   "titel": "Første foldning",
+   "ret": "Gifler",
+   "handling": "Rul dejen ud, læg smørret i midten, luk som et brev. Rul til en lang rektangel, fold i tre. Film, køl.",
+   "kendetegn": "Kanterne holder tæt - smør må ikke titte ud. Ser du en blank plet, er det for varmt: køl med det samme.",
+   "timer_min": 40,
+   "opskrift": "gifler",
+   "aktiv_min": 15
+  }
+ ],
+ "opskrifter": [
+  {
+   "id": "gifler",
+   "navn": "Veganske gifler med kanelremonce",
+   "antal": "30 stk",
+   "ingredienser": [
+    "1 kg hvedemel",
+    "50 g gær",
+    "500 ml plantemælk",
+    "80 g sukker",
+    "15 g salt",
+    "600 g vegansk blok-smør (til lag)",
+    "Remonce: 200 g blødt blok-smør, 200 g brun farin, 2 spsk kanel"
+   ],
+   "fremgangsmaade": [
+    "Ælt dejen glat, køl 40 min.",
+    "Bank smørret til en plade, køl.",
+    "Læg smørret ind, tre foldninger med 40 min køl imellem.",
+    "Rul ud, smør remonce på, skær trekanter, rul til gifler.",
+    "Hæv ved højst 27°C til de dirrer som gelé.",
+    "Bag ved 200°C i 14-16 min til de er gyldne og lyder hule."
+   ],
+   "fejlkilder": [
+    {
+     "titel": "Blok-smør, ikke bøtte",
+     "tekst": "Margarine fra bøtte har for meget vand, bliver suget op i dejen i stedet for at danne lag, og du får boller.",
+     "kan_reddes": false
+    },
+    {
+     "titel": "Hævning aldrig over 27°C",
+     "tekst": "Vegansk smør smelter lavere. Bliver det for varmt, løber smørret ud af lagene og ligger på pladen.",
+     "kan_reddes": false
+    },
+    {
+     "titel": "Hævetid",
+     "tekst": "Kold dej hæver langsommere. Læg 30 % oveni og kig på dejen, ikke uret.",
+     "kan_reddes": true
+    }
+   ]
+  },
+  {
+   "id": "dahl",
+   "navn": "Rød linsedahl med tarka",
+   "antal": "10 personer",
+   "ingredienser": [
+    "1 kg røde linser",
+    "3 løg",
+    "1 knold ingefær",
+    "1 helt hvidløg",
+    "2 dåser hakkede tomater",
+    "2 spsk gurkemeje",
+    "2 spsk spidskommen",
+    "2 spsk sorte sennepsfrø",
+    "Chiliflager, salt, lime",
+    "Neutral olie"
+   ],
+   "fremgangsmaade": [
+    "Svits løg, ingefær, hvidløg blødt.",
+    "Skru ned, gurkemeje og spidskommen i, 30 sek.",
+    "Linser og 3 liter vand. Simr 25 min.",
+    "Tomater i når linserne er faldet fra hinanden. Simr 10 min mere. Salt og lime.",
+    "Tarka laves ved bordet - se tabellen."
+   ],
+   "sekvens": [
+    {
+     "handling": "Olie i lille pande, høj varme",
+     "tid": "0:00",
+     "kendetegn": "Olien blinker og bevæger sig let"
+    },
+    {
+     "handling": "Sennepsfrø i",
+     "tid": "0:20",
+     "kendetegn": "De popper og hopper - lyden er din timer"
+    },
+    {
+     "handling": "Spidskommen i",
+     "tid": "0:40",
+     "kendetegn": "Dufter nøddeagtigt, mørkner ét nuance"
+    },
+    {
+     "handling": "Hvidløg i skiver",
+     "tid": "0:55",
+     "kendetegn": "Kanterne bliver gyldne - IKKE brune"
+    },
+    {
+     "handling": "Chiliflager, træk panden af",
+     "tid": "1:10",
+     "kendetegn": "Olien farves rød på sekunder"
+    },
+    {
+     "handling": "Hæld over dahlen ved bordet",
+     "tid": "1:20",
+     "kendetegn": "Den fræser og dufter - alle kigger samme vej"
+    }
+   ],
+   "fejlkilder": [
+    {
+     "titel": "Gurkemeje brænder",
+     "tekst": "Skru ned før den kommer i. Brændt gurkemeje er bittert og kan ikke reddes.",
+     "kan_reddes": false
+    },
+    {
+     "titel": "Tomater for tidligt",
+     "tekst": "Syre låser røde linser. Kom dem i når linserne er møre.",
+     "kan_reddes": false
+    },
+    {
+     "titel": "Tarka-skålen",
+     "tekst": "Mål alle krydderier op i én skål på forhånd. Man kan ikke lede efter chiliflager mens sennepsfrø brænder på.",
+     "kan_reddes": true
+    }
+   ]
+  }
+ ],
+ "estimat": {
+  "samlet_min": 170,
+  "note": "aftenen før - dahlen laves i dejens køletid"
+ }
+}

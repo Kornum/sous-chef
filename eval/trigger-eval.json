@@ -1,0 +1,22 @@
+[
+  {"query": "jeg får gæster på lørdag, vi bliver 8 voksne og 3 børn, og jeg aner ikke hvad jeg skal servere", "should_trigger": true},
+  {"query": "hey, sidder i bilen på vej mod føtex - jeg skal bruge en indkøbsliste til aftensmad til 4, gerne noget med kylling", "should_trigger": true},
+  {"query": "min datter fylder 10 på søndag og jeg skal holde fødselsdag for 12 unger og deres forældre. hjælp", "should_trigger": true},
+  {"query": "hvad skal jeg lave til aftensmad i dag? har en rest kogte kartofler og lidt bacon i køleskabet", "should_trigger": true},
+  {"query": "Jeg vil gerne imponere mine svigerforældre på fredag med en tre-retters menu, men jeg er ikke nogen stjernekok. Kan du hjælpe mig med at planlægge det?", "should_trigger": true},
+  {"query": "vi er veganere og jeg skal lave dessert til 6 personer i morgen - gerne noget der kan forberedes i aften", "should_trigger": true},
+  {"query": "står i køkkenet lige nu og min sauce er skilt, gæsterne kommer om 40 min, hvad gør jeg??", "should_trigger": true},
+  {"query": "Skal holde påskefrokost for familien, ca. 14 personer. Hvad skal jeg købe ind, og hvornår skal jeg starte?", "should_trigger": true},
+  {"query": "kan du hjælpe med maden på lørdag hvor vi får venner på besøg? min kone kan ikke tåle gluten", "should_trigger": true},
+  {"query": "jeg har lovet at tage en kage med på arbejde i morgen - hvad kan jeg nå at bage i aften efter kl 20?", "should_trigger": true},
+  {"query": "hvor mange kalorier er der i en portion lasagne?", "should_trigger": false},
+  {"query": "er der gluten i spelt?", "should_trigger": false},
+  {"query": "kan du anbefale en god italiensk restaurant i København til fredag aften?", "should_trigger": false},
+  {"query": "hvad er forskellen på pastinak og persillerod?", "should_trigger": false},
+  {"query": "min chef har indkaldt til frokostmøde på tirsdag - kan du hjælpe mig med at forberede en agenda?", "should_trigger": false},
+  {"query": "jeg er ved at skrive et blogindlæg om det nye nordiske køkken - kan du hjælpe med research og kilder?", "should_trigger": false},
+  {"query": "hvor længe kan man opbevare rå kylling i køleskabet?", "should_trigger": false},
+  {"query": "lav et regneark over vores madbudget for de sidste 3 måneder, jeg har tallene i en csv i downloads", "should_trigger": false},
+  {"query": "kan du oversætte den her opskrift fra engelsk til dansk? den er fra bon appetit", "should_trigger": false},
+  {"query": "jeg skal lave en præsentation om madspild til et kundemøde på torsdag, ca 10 slides", "should_trigger": false}
+]
