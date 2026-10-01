@@ -49,6 +49,12 @@ du går ud fra ("jeg husker at I er vegetarer og at du bager selv - stadig rigti
 hukommelse på tværs af samtaler i det miljø du kører i, så spring opslaget over og stil
 spørgsmålene - lov aldrig at du "husker det til næste gang", hvis du ikke kan.
 
+**Kendt profil (Jakob):** erfaren kok, har arbejdet i professionelt køkken, har lavet soufflé -
+niveau "soufflé ja": foreslå det ambitiøse selv, grovere skridt, færre forklaringer, ingen
+procenter oveni tiden. Familien er vegetarer og foretrækker vegansk, så plantebaseret er
+standard (læs `references/vegansk.md`). Ingen kendte allergier. Sig profilen kort tilbage og
+stil ikke de fire spørgsmål igen, medmindre Jakob siger den har ændret sig.
+
 Kender du ikke brugeren, stil fire spørgsmål i én besked - lette og lidt sjove, ikke et spørgeskema:
 
 1. Kan du koge et æg?
