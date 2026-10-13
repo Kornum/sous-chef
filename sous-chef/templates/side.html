@@ -351,14 +351,21 @@ function renderIndkoeb(){
     };
   });
 }
-// kort tekst til sms: samlet skøn først, så varer der stadig mangler (ikke købt, ikke "har det")
+// kort tekst til sms, delt op som butikken: samlet skøn først, så en sektion med emoji pr. afdeling
+// med de varer der stadig mangler (ikke købt, ikke "har det"). Afdelingerne står i butiksrækkefølge.
+const AFD_EMOJI = [[/frugt|grønt|groent/,'🥦'],[/frost|dybfrost/,'🧊'],[/køl|koel|mejeri|ost/,'🧀'],[/kød|koed|fisk|pålæg/,'🥩'],
+  [/brød|broed|bager/,'🍞'],[/kolonial|tørvare|toervare|konserves/,'🥫'],[/drik|vin|øl/,'🥤'],
+  [/husholdning|hygiejne|rengøring|andet|dyr/,'🧻']];
+const afdEmoji = navn => { const n = String(navn).toLowerCase(); for (const [re,e] of AFD_EMOJI) if (re.test(n)) return e; return '🛒'; };
 function listeTekst(){
   const I = DATA.indkoeb || {afdelinger:[]};
-  const varer = I.afdelinger.flatMap(a=>a.varer).filter(v=>!S.har[v.id] && !S.koebt[v.id]);
+  const kort = t => String(t).replace(/\s*\(.*?\)/g,'');
+  const afd = I.afdelinger.map(a => ({navn:a.navn, varer:a.varer.filter(v=>!S.har[v.id] && !S.koebt[v.id])})).filter(a=>a.varer.length);
+  const varer = afd.flatMap(a=>a.varer);
   const medPris = varer.filter(v=>typeof v.pris==='number');
   const total = medPris.length===varer.length && varer.length ? Math.round(medPris.reduce((s,v)=>s+v.pris,0)) : null;
-  const linjer = varer.map(v => v.navn.replace(/\s*\(.*?\)/g,'') + (v.maengde? ' ' + String(v.maengde).replace(/\s*\(.*?\)/g,'') : ''));
-  return (total!==null ? 'Indkøb, ca. '+total+' kr\n' : 'Indkøb\n') + linjer.join('\n');
+  const sektioner = afd.map(a => afdEmoji(a.navn)+' '+a.navn+'\n'+a.varer.map(v => '- '+kort(v.navn)+(v.maengde? ' '+kort(v.maengde) : '')).join('\n'));
+  return (total!==null ? 'Indkøb, ca. '+total+' kr' : 'Indkøb') + '\n\n' + sektioner.join('\n\n');
 }
 async function kopier(){
   const tekst = listeTekst();

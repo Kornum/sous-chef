@@ -56,7 +56,8 @@ To regler følger af lageret:
 - Husker alt i artifact-db + localStorage som beskrevet ovenfor.
 - ⚠-varer sorteres øverst i deres afdeling. Antal og pris i kurven tælles.
 - Indkøb-fanen har en knap "Kopiér listen": lægger de varer der mangler i udklipsholderen som
-  kort tekst til sms, med et samlet prisskøn som første linje.
+  kort tekst til sms: samlet prisskøn først, derefter en sektion med emoji pr. butiksafdeling
+  (afdelingerne i dataene står i butiksrækkefølge, så giv dem klare navne som Frugt & grønt, Køl, Kolonial).
 - Overblik-fanen: menuen med kalorier og sundhedsprikker pr. ret, kalorier pr. person, sundhedsbarometer
   (snit 1-5) og økonomibarometer (pris, pris pr. person, mod budget hvis det er sat).
 - Madlavnings-fanen: trinliste øverst der kan foldes ud (alle trin med status og hop-til),
