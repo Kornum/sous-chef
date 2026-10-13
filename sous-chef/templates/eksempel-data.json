@@ -83,6 +83,18 @@
       "pris": 20
      }
     ]
+   },
+   {
+    "navn": "Andet",
+    "varer": [
+     {
+      "id": "opvasketabs",
+      "navn": "Opvasketabs",
+      "maengde": "1 pakke",
+      "pris": 40,
+      "maaltid": false
+     }
+    ]
    }
   ]
  },
@@ -190,5 +202,36 @@
  "estimat": {
   "samlet_min": 170,
   "note": "aftenen før - dahlen laves i dejens køletid"
- }
+ },
+ "personer": 10,
+ "budget_kr": 900,
+ "menu": [
+  {
+   "ret": "Veganske gifler med kanelremonce",
+   "beskrivelse": "Lamineret dej med kanel og brun farin, glasur på",
+   "kcal_pr_person": 380,
+   "sundhed": {
+    "score": 2,
+    "begrundelse": "meget smør og sukker, men en festlig undtagelse"
+   }
+  },
+  {
+   "ret": "Rød linsedahl med tarka",
+   "beskrivelse": "Linser, tomat og spinat med sennepsfrø og hvidløg hældt over ved bordet",
+   "kcal_pr_person": 520,
+   "sundhed": {
+    "score": 5,
+    "begrundelse": "bælgfrugter, grønt og mættende fibre"
+   }
+  },
+  {
+   "ret": "Kachumber og raita",
+   "beskrivelse": "Syrlig, frisk salat og kølende yoghurt",
+   "kcal_pr_person": 90,
+   "sundhed": {
+    "score": 5,
+    "begrundelse": "rå grønt og lidt fedt"
+   }
+  }
+ ]
 }

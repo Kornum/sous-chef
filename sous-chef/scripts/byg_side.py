@@ -41,6 +41,20 @@ def valider(d):
             ids.add(v.get("id"))
             if "pris" in v and not isinstance(v["pris"], (int, float)):
                 fejl.append(f"vare {v.get('id')}: pris skal være et tal i kr, fik {v['pris']!r}")
+    if d.get("menu"):
+        if not isinstance(d.get("personer"), int) or d["personer"] < 1:
+            fejl.append("'personer' skal være et heltal (antal der spiser), når 'menu' er med")
+        for r in d["menu"]:
+            hvem = r.get("ret") or "?"
+            if not r.get("ret"):
+                fejl.append("menu: en ret mangler 'ret' (navn)")
+            if not isinstance(r.get("kcal_pr_person"), (int, float)) or r["kcal_pr_person"] <= 0:
+                fejl.append(f"menu '{hvem}': kcal_pr_person skal være et tal over 0 (skøn pr. person)")
+            sd = r.get("sundhed")
+            if not isinstance(sd, dict) or sd.get("score") not in (1, 2, 3, 4, 5) or not sd.get("begrundelse"):
+                fejl.append(f"menu '{hvem}': sundhed skal være {{score: 1-5, begrundelse: kort tekst}}")
+    if "budget_kr" in d and not isinstance(d["budget_kr"], (int, float)):
+        fejl.append("budget_kr skal være et tal i kr")
     tids = set()
     for t in d.get("trin", []):
         if not t.get("id"):

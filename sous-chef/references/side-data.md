@@ -7,26 +7,29 @@ ser rigtig ud men har dublet-id'er mister afkrydsninger i butikken uden at nogen
 
 ## Publicering: én fast Artifact-side med db-lager
 
-Faste adresser - skift dem aldrig, og lav aldrig en ny artifact:
-
-- **Værktøjs-URL** (`url` i Artifact og ArtifactData): `https://claude.ai/code/artifact/877daac6-4e2f-4b14-9f1a-2b2e066db7c8`
-- **Brugerens link** (siden på telefonen): `https://claude.ai/artifact/HjQ4PA2ZUc4XwCcqSu2KpK`
+Brugeren har ÉN side med titlen "Sous-chef". Find den med Artifact `list` (scope `mine`) og brug
+dens URL til både Artifact og ArtifactData. Lav aldrig en ny artifact, hvis den findes. Findes den
+ikke, er det første gang: publicér uden `url`.
 
 Flowet:
 
+0. **Find siden** som beskrevet. Første gang: gem også `profil/bruger` (se nedenfor).
 1. **Eksisterende plan?** ArtifactData `get` på `aktiv/plan` giver `plan_id`; `get` på
    `plandata/<plan_id>` (med `out_dir`) giver plan-JSON'en som fil - redigér den. Ny plan: nyt
    id, skriv JSON forfra i scratchpad.
 2. Byg med `--fuld`.
 3. Er artifacten ikke læst i denne samtale endnu: læs den først (`Artifact` med `action: "read"`
    og `url`), ellers afvises publiceringen.
-4. Publicér med `url` = værktøjs-URL og **altid** `capabilities: {"db": {}}` - det er en
+4. Publicér med `url` = brugerens side (uden `url` første gang) og **altid** `capabilities: {"db": {}}` - det er en
    fuld-sæt-deklaration, så den er sikker at gentage, og uden den mister siden sit lager.
 5. **Skriv planen tilbage til databasen:** `set` på `plandata/<plan_id>` (med `file_path` =
    data-JSON'en) og `set` på `aktiv/plan` = `{"plan_id": "<plan_id>"}`. Databasen er eneste
    planlager - skill-pakken er skrivebeskyttet i cloud.
 
-**Databasens indhold** (alle mod værktøjs-URL'en):
+**Databasens indhold** (alle mod brugerens side):
+
+- `profil/bruger` - brugerens svar, gemt én gang: `niveau`, `hensyn`, `personer` (heltal),
+  `budget_kr` (tal) og `noter` (fx hvad der er lavet før). Læses først i hver session.
 
 - `planer/<plan-id>` - sidens egen tilstand: købt (`koebt`), fravalgt (`har`),
   ingrediens-hakker (`ingr`), aktivt trin (`trin`) og kørende timere
@@ -54,6 +57,8 @@ To regler følger af lageret:
 - ⚠-varer sorteres øverst i deres afdeling. Antal og pris i kurven tælles.
 - Indkøb-fanen har en knap "Kopiér listen": lægger de varer der mangler i udklipsholderen som
   kort tekst til sms, med et samlet prisskøn som første linje.
+- Overblik-fanen: menuen med kalorier og sundhedsprikker pr. ret, kalorier pr. person, sundhedsbarometer
+  (snit 1-5) og økonomibarometer (pris, pris pr. person, mod budget hvis det er sat).
 - Madlavnings-fanen: trinliste øverst der kan foldes ud (alle trin med status og hop-til),
   ét trin pr. skærm med swipe/knapper/piletaster, ingrediens-hakker pr. trin,
   "Uddyb" som foldes ud, timere som chips på tværs af trin, lyd + vibration ved 0.
@@ -66,12 +71,18 @@ To regler følger af lageret:
 {
   "id": "unik-slug-for-denne-plan",
   "titel": "Fødselsdag lørdag",
+  "personer": 10,
+  "budget_kr": 900,
+  "menu": [
+    {"ret": "Rød linsedahl", "beskrivelse": "valgfri, én linje", "kcal_pr_person": 520,
+     "sundhed": {"score": 5, "begrundelse": "bælgfrugter og grønt"}}
+  ],
   "estimat": {"samlet_min": 300, "note": "valgfri linje, fx 'heraf 3 t hvor dejen bare hviler'"},
   "indkoeb": {
     "butik_lukker": "valgfri linje øverst - kun hvis lukketid er tæt på",
     "afdelinger": [
       {"navn": "Frugt & grønt", "varer": [
-        {"id": "lime", "navn": "Lime", "maengde": "10 stk", "pris": 40,
+        {"id": "lime", "navn": "Lime", "maengde": "10 stk", "pris": 40, "maaltid": true,
          "note": "valgfri - brug den til mængder der ser forkerte ud og til hvorfor",
          "kritisk": true}
       ]}
@@ -115,6 +126,9 @@ trinnene. Regler for indholdet:
 - **`pris` pr. vare i kr, tal, skøn** på dansk supermarkedsniveau for den mængde der står.
   Sæt den på alle varer eller ingen - en halv sum lyver.
 - **`kan_reddes`** sættes altid, true eller false.
+- **`personer`, `menu`, `budget_kr`** bygger Overblik-fanen. `kcal_pr_person` er et skøn pr. ret
+  (heltal, rundet til 10), `sundhed.score` er 1-5 med en kort `begrundelse`, begge vejledende.
+  `budget_kr` er valgfri. Varer der ikke er mad får `"maaltid": false` og tæller ikke i måltidets pris.
 - Vare-id'er og trin-id'er: korte, stabile slugs. Genbrug dem ved genudgivelse.
 
 Se `templates/eksempel-data.json` for et fuldt eksempel (gifler + dahl, inkl. en sekvens

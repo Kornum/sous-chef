@@ -139,17 +139,40 @@ button.ghost:active{background:var(--chip)}
 .vare .pris{color:var(--muted);font-size:13px;font-weight:600;white-space:nowrap}
 .kort .note{text-align:left;padding:4px 0 0}
 .kopi{margin:0 0 16px}
+.ov-menu{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:6px 14px;margin-bottom:14px;box-shadow:var(--shadow)}
+.ov-ret{padding:12px 0;border-top:1px solid var(--line)}
+.ov-ret:first-child{border-top:0}
+.ov-ret .rtop{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.ov-ret .rnavn{font-weight:750;font-size:17px}
+.ov-ret .rkcal{color:var(--muted);font-size:13.5px;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+.ov-ret .rtekst{color:var(--muted);font-size:14px;margin-top:2px;line-height:1.35}
+.ov-ret .rsund{display:flex;align-items:center;gap:8px;margin-top:7px;font-size:13px;color:var(--muted)}
+.prikker{display:inline-flex;gap:3px}
+.prikker i{width:9px;height:9px;border-radius:50%;background:var(--soft);border:1px solid var(--line)}
+.prikker i.paa{background:var(--ok);border-color:var(--ok)}
+.baro{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:var(--shadow)}
+.baro .btop{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.baro .btitel{font-size:12.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:800}
+.baro .bstor{font-size:26px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.baro .bmaal{height:10px;border-radius:999px;background:var(--soft);overflow:hidden;margin:9px 0 7px}
+.baro .bmaal i{display:block;height:100%;border-radius:999px;background:var(--grad-ok);transition:width .25s ease}
+.baro .bmaal i.over{background:var(--grad-warn)}
+.baro .bnote{color:var(--muted);font-size:13.5px;line-height:1.4}
+.baro .bnote b{color:var(--fg)}
+.ov-tom{color:var(--muted);text-align:center;padding:26px 10px;font-size:14.5px}
 .kort .tid-linje{color:var(--muted);font-size:13.5px;font-weight:600}
 </style>
 
 <div class="app">
   <header><h1 id="titel"></h1></header>
   <nav class="tabs">
+    <button data-fane="overblik">Overblik</button>
     <button data-fane="indkoeb">Indkøb</button>
     <button data-fane="madlavning">Madlavning</button>
   </nav>
   <main>
-    <section id="fane-indkoeb"></section>
+    <section id="fane-overblik"></section>
+    <section id="fane-indkoeb" class="hidden"></section>
     <section id="fane-madlavning" class="hidden"></section>
   </main>
   <div class="pager hidden" id="pager">
@@ -174,8 +197,8 @@ const esc = s => String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&l
 let S;
 try { S = JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e){ S = {}; }
 S.koebt ||= {}; S.har ||= {}; S.timere ||= {}; S.ingr ||= {}; S.trin ||= 0; S.opdateret ||= 0;
-const faner = ['indkoeb','madlavning'];
-if (!faner.includes(S.fane)) S.fane = 'indkoeb';
+const faner = ['overblik','indkoeb','madlavning'];
+if (!faner.includes(S.fane)) S.fane = 'overblik';
 
 const gemLokal = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} };
 const gem = () => { S.opdateret = Date.now(); gemLokal(); push(); };
@@ -228,7 +251,7 @@ document.title = DATA.titel || 'Sous-chef';
 
 // ---------- faner ----------
 document.querySelectorAll('nav.tabs button').forEach(b => b.onclick = () => visFane(b.dataset.fane));
-function renderAktiv(){ if (S.fane==='madlavning') renderMadlavning(); else renderIndkoeb(); }
+function renderAktiv(){ if (S.fane==='madlavning') renderMadlavning(); else if (S.fane==='indkoeb') renderIndkoeb(); else renderOverblik(); }
 function visFane(f){
   S.fane = f; gemLokal();
   faner.forEach(x => {
@@ -243,6 +266,46 @@ function visFane(f){
 // ret-farver: en stabil prik pr. ret, så man kan se på tværs af trin hvad der hører sammen
 const RETFARVER=['#2e6b3e','#c4401d','#b8860b','#3b6ea5','#8a4fa3','#2a8c8c'];
 const retFarve = navn => { let h=0; for (const c of String(navn||'')) h=(h*31+c.charCodeAt(0))>>>0; return RETFARVER[h%RETFARVER.length]; };
+
+// ---------- OVERBLIK ----------
+// Menu, kalorier, økonomi og sundhed. Kalorier og sundhed er mine skøn pr. ret og skrives i data.menu.
+const kr = n => Math.round(n).toLocaleString('da-DK')+' kr';
+function prikker(n){ let h='<span class="prikker">'; for (let i=1;i<=5;i++) h+='<i class="'+(i<=n?'paa':'')+'"></i>'; return h+'</span>'; }
+const SUND_ORD = {1:'tung',2:'under middel',3:'middel',4:'sund',5:'meget sund'};
+function renderOverblik(){
+  const el = document.getElementById('fane-overblik');
+  const menu = DATA.menu || [];
+  const pers = DATA.personer || 0;
+  const varer = (DATA.indkoeb||{afdelinger:[]}).afdelinger.flatMap(a=>a.varer);
+  const maaltid = varer.filter(v=>v.maaltid!==false && typeof v.pris==='number');
+  const total = maaltid.reduce((s,v)=>s+v.pris,0);
+  let h = '';
+  if (menu.length){
+    h += '<div class="ov-menu">' + menu.map(r =>
+      '<div class="ov-ret"><div class="rtop"><span class="rnavn">'+esc(r.ret)+'</span><span class="rkcal">~'+Math.round(r.kcal_pr_person)+' kcal</span></div>'
+      + (r.beskrivelse?'<div class="rtekst">'+esc(r.beskrivelse)+'</div>':'')
+      + '<div class="rsund">'+prikker(r.sundhed.score)+'<span>'+SUND_ORD[r.sundhed.score]+' · '+esc(r.sundhed.begrundelse)+'</span></div></div>').join('') + '</div>';
+    const kcal = menu.reduce((s,r)=>s+r.kcal_pr_person,0);
+    h += '<div class="baro"><div class="btop"><span class="btitel">Kalorier pr. person</span><span class="bstor">~'+Math.round(kcal)+'</span></div>'
+      + '<div class="bnote">Samlet for hele måltidet. Et skøn ud fra mængderne, typisk ±20 %. Ikke en ernæringsberegning.</div></div>';
+    const snit = menu.reduce((s,r)=>s+r.sundhed.score,0)/menu.length;
+    h += '<div class="baro"><div class="btop"><span class="btitel">Sundhed</span><span class="bstor">'+snit.toFixed(1).replace('.',',')+' / 5</span></div>'
+      + '<div class="bmaal"><i style="width:'+Math.round(snit/5*100)+'%"></i></div>'
+      + '<div class="bnote">Snit af retterne. 5 er meget grønt, bælgfrugter og fuldkorn med lidt fedt og sukker. Vejledende, vurderet ret for ret.</div></div>';
+  }
+  if (total>0){
+    const budget = DATA.budget_kr;
+    const over = budget && total>budget;
+    h += '<div class="baro"><div class="btop"><span class="btitel">Økonomi</span><span class="bstor">ca. '+kr(total)+'</span></div>'
+      + (budget ? '<div class="bmaal"><i class="'+(over?'over':'')+'" style="width:'+Math.min(100,Math.round(total/budget*100))+'%"></i></div>' : '')
+      + '<div class="bnote">'+(pers? '<b>ca. '+kr(total/pers)+' pr. person</b> for '+pers+'. ' : '')
+      + (budget ? (over ? 'Over budgettet på '+kr(budget)+' med '+kr(total-budget)+'.' : 'Inden for budgettet på '+kr(budget)+'.') : 'Skøn ud fra danske supermarkedspriser.')
+      + (maaltid.length<varer.filter(v=>typeof v.pris==='number').length ? ' Ikke-mad på listen er ikke talt med.' : '')
+      + '</div></div>';
+  }
+  if (!menu.length && !(total>0)) h = '<p class="ov-tom">Overblikket kommer, når menuen er godkendt.</p>';
+  el.innerHTML = h;
+}
 
 // ---------- INDKØB ----------
 function renderIndkoeb(){

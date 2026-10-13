@@ -5,17 +5,21 @@ fødselsdag, en enkelt ret eller en hel menu. Skillen scoper måltidet med dig, 
 indkøbsliste som afkrydsnings-side til telefonen og guider dig trin for trin i køkkenet
 med timere og fejlkilder.
 
-Bygget af Jakob Kornum. Skrevet på dansk, til danske køkkener.
+Bygget af Jakob Kornum. Skrevet på dansk, til danske køkkener. Kræver Claude Code (Artifact-værktøjet), fordi siden og profilen bor i en Artifact.
 
 ## Hvad den gør
 
 - **Scoper måltidet** - læser din menu kritisk (mangler den syre? for mange dejprojekter?),
   foreslår med sæsonen og siger pris og tid højt, før du beslutter dig
-- **Indkøbsliste som lille app** - én HTML-side med tre faner: Indkøb (afkrydsning, prisoverslag,
-  "Del listen"-knap), Køkken (ét trin pr. skærm, timere med lyd, wake lock) og Opskrifter
+- **Én lille app på telefonen** - en privat Artifact-side med tre faner: Overblik (menu,
+  kalorier pr. person, sundheds- og økonomibarometer), Indkøb (afkrydsning, prisoverslag og en
+  "Kopiér listen"-knap til sms) og Madlavning (ét trin pr. skærm, varighed, nedtællende timere)
+- **Husker dig** - profilen (niveau, hensyn, antal, budget) gemmes én gang i sidens egen
+  database, så du aldrig skal svare på det samme to gange
 - **Fejlkilder med mekanisme** - ikke "pas på den brænder på", men hvorfor det går galt,
   hvordan du ser det, og om det kan reddes
-- **Sanseindtryk slår klokkeslæt** - "sennepsfrøene popper - lyden er din timer"
+- **Ingen klokkeslæt, kun varigheder** - ingen deadlines, men timere på alt hvor man venter
+- **Sanseindtryk slår uret** - "sennepsfrøene popper - lyden er din timer"
 
 ## Struktur
 
