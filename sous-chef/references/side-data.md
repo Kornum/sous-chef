@@ -54,7 +54,8 @@ To regler følger af lageret:
 ## Hvad siden gør selv (skriv det ikke i data)
 
 - Husker alt i artifact-db + localStorage som beskrevet ovenfor.
-- ⚠-varer sorteres øverst i deres afdeling. Antal og pris i kurven tælles.
+- Antal og pris i kurven tælles. Der er ingen advarselsikoner: det der er vigtigt ved en vare
+  står i dens `note`.
 - Indkøb-fanen har en knap "Kopiér listen": lægger de varer der mangler i udklipsholderen som
   kort tekst til sms: samlet prisskøn først, derefter en sektion med emoji pr. butiksafdeling
   (afdelingerne i dataene står i butiksrækkefølge, så giv dem klare navne som Frugt & grønt, Køl, Kolonial).
@@ -84,8 +85,7 @@ To regler følger af lageret:
     "afdelinger": [
       {"navn": "Frugt & grønt", "varer": [
         {"id": "lime", "navn": "Lime", "maengde": "10 stk", "pris": 40, "maaltid": true,
-         "note": "valgfri - brug den til mængder der ser forkerte ud og til hvorfor",
-         "kritisk": true}
+         "note": "valgfri - brug den til mængder der ser forkerte ud, til hvorfor, og til om varen skal med hjem i dag"}
       ]}
     ]
   },
@@ -138,7 +138,7 @@ skrevet som mikro-trin).
 ## Plan B
 
 Plan B gælder kun ægte fejl i en Code-session (Python nede, publicering afvist): skriv
-indkøbslisten som ren tekst i chatten, sorteret efter afdeling med ⚠ og forklarede mængder, og
+indkøbslisten som ren tekst i chatten, sorteret efter afdeling med forklarede mængder, og
 guid trinene ét ad gangen. Sig at det er nødløsningen. Lad aldrig som om siden er der, hvis den
 ikke er. Mangler værktøjerne helt (almindelig chat), er svaret ikke Plan B men henvisningen i
 SKILL.md: link til siden + Code-fanen.

@@ -2,7 +2,7 @@
  "id": "eksempel-foedselsdag",
  "titel": "Fødselsdag lørdag",
  "indkoeb": {
-  "butik_lukker": "Føtex lukker kl. 22 i aften - ⚠-varerne skal med hjem i dag",
+  "butik_lukker": "Føtex lukker kl. 22 i aften - varer mærket 'i dag' i noten skal med hjem nu",
   "afdelinger": [
    {
     "navn": "Frugt & grønt",
@@ -12,7 +12,6 @@
       "navn": "Lime",
       "maengde": "10 stk",
       "note": "Ser forkert ud, men de går igen i raita, kachumber, dahl og drinken",
-      "kritisk": false,
       "pris": 40
      },
      {
@@ -42,16 +41,15 @@
       "id": "bloksmoer",
       "navn": "Vegansk BLOK-smør (ikke bøtte)",
       "maengde": "4 pakker",
-      "note": "Bøtte har for meget vand og kan ikke lamineres. Fire pakker fordi giflerne æder tre alene",
-      "kritisk": true,
+      "note": "Bøtte har for meget vand og kan ikke lamineres. Fire pakker fordi giflerne æder tre alene. Skal med hjem i dag",
       "pris": 100
      },
      {
       "id": "gaer",
       "navn": "Gær",
       "maengde": "2 pakker",
-      "kritisk": true,
-      "pris": 10
+      "pris": 10,
+      "note": "Skal med hjem i dag"
      }
     ]
    },

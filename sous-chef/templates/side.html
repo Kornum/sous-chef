@@ -66,7 +66,6 @@ button.ghost:active{background:var(--chip)}
 .vare .txt{flex:1;min-width:0}
 .vare .navn{font-weight:650;font-size:16.5px;display:flex;flex-wrap:wrap;align-items:center;gap:7px}
 .vare .maengde{color:var(--fg);opacity:.8;font-weight:600}
-.vare .krit{background:var(--grad-warn);color:#fff;font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;border-radius:6px;padding:2px 7px;line-height:1.4}
 .vare .vnote{color:var(--muted);font-size:14px;margin-top:3px;line-height:1.35}
 .vare .har{border:1px solid var(--line);background:var(--bg);color:var(--muted);font:inherit;font-size:13px;font-weight:600;padding:8px 11px;border-radius:10px;flex:none;align-self:center}
 .harliste{margin-top:6px}
@@ -325,7 +324,7 @@ function renderIndkoeb(){
   h += '<button class="big kopi" id="kopi">Kopiér listen</button>';
   h += '<div class="pwrap"><div class="ptop"><span><b>'+koebt+'</b> af '+aktive.length+' i kurven</span><span>'+(alle.length-aktive.length? (alle.length-aktive.length)+' har du i forvejen':'')+'</span></div><div class="pbar"><i style="width:'+(aktive.length? Math.round(100*koebt/aktive.length):0)+'%"></i></div></div>';
   I.afdelinger.forEach(a => {
-    const varer = a.varer.filter(v=>!S.har[v.id]).sort((x,y)=>(y.kritisk?1:0)-(x.kritisk?1:0));
+    const varer = a.varer.filter(v=>!S.har[v.id]);
     if (!varer.length) return;
     h += '<div class="afd"><div class="ahead"><h2>'+esc(a.navn)+'</h2><span class="acount">'+varer.filter(v=>S.koebt[v.id]).length+'/'+varer.length+'</span></div>';
     varer.forEach(v => h += vareHtml(v,false));
@@ -381,7 +380,7 @@ async function kopier(){
 function vareHtml(v, iHar){
   return '<div class="vare'+(S.koebt[v.id]&&!iHar?' koebt':'')+'" data-id="'+esc(v.id)+'">'
     + '<div class="box">'+(S.koebt[v.id]&&!iHar?'✓':'')+'</div>'
-    + '<div class="txt"><div class="navn">'+(v.kritisk?'<span class="krit">⚠</span>':'')+esc(v.navn)+(v.maengde?' <span class="maengde">· '+esc(v.maengde)+'</span>':'')+(typeof v.pris==='number'?' <span class="pris">~'+Math.round(v.pris)+' kr</span>':'')+'</div>'
+    + '<div class="txt"><div class="navn">'+esc(v.navn)+(v.maengde?' <span class="maengde">· '+esc(v.maengde)+'</span>':'')+(typeof v.pris==='number'?' <span class="pris">~'+Math.round(v.pris)+' kr</span>':'')+'</div>'
     + (v.note?'<div class="vnote">'+esc(v.note)+'</div>':'') + '</div>'
     + '<button class="har">'+(iHar?'Tilbage':'Har det')+'</button></div>';
 }

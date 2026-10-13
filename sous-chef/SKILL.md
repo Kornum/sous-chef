@@ -196,8 +196,10 @@ Overblik-fanen bygges af `menu`, `personer`, `budget_kr` og varernes priser. Du 
 Indholdsregler:
 
 - **Sortér efter butiksafdeling**, ikke efter ret. Brugeren går én runde gennem butikken.
-- **⚠ på alt der skal bruges samme aften eller er en hård blokering** (blok-smør, gær, kokosfløde
-  der skal køle et døgn). Nævn butikkens lukketid hvis den er tæt på.
+- **Skriv det i noten, når en vare skal bruges samme aften eller er en hård blokering** (blok-smør,
+  gær, kokosfløde der skal køle et døgn): "skal være moden i dag", "uden den kan retten ikke
+  laves". Der er ingen advarselsikoner på siden, så noten bærer det. Nævn butikkens lukketid hvis
+  den er tæt på.
 - **Mængder der ser forkerte ud, forklares på stedet.** Ti lime, fordi de går igen i fire ting.
 - **Hvert trin bærer alt hvad det kræver:** handling, ingredienser med vægt og mål for netop det
   trin, kendetegn, fejlkilde, evt. uddyb. Kan trinet ikke forstås af handling + kendetegn +

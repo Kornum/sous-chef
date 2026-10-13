@@ -6,7 +6,7 @@ Skriv den relevante forskel ind som **fejlkilde** i opskriften/trinet, ikke som 
 
 | Emne | Forskellen | Konsekvens |
 |---|---|---|
-| **Blok-smør vs. bøtte** | Bøtte har for meget vand, for lidt fedt | Laminering er umulig - du får boller. Afgørende, ikke en detalje. Sæt ⚠ på indkøbslisten og skriv "BLOK, ikke bøtte" i varenavnet |
+| **Blok-smør vs. bøtte** | Bøtte har for meget vand, for lidt fedt | Laminering er umulig - du får boller. Afgørende, ikke en detalje. på indkøbslisten og skriv "BLOK, ikke bøtte" i varenavnet |
 | **Smeltepunkt** | Vegansk smør smelter lavere end mælkesmør | Hævning aldrig over 27°C, ellers løber smørret ud af lagene og ligger på pladen. Kan ikke reddes |
 | **Arbejdsvindue** | Knækker som glas koldt, fedtet efter få minutter varmt | Tag ud 10-15 min før brug. Køl igen ved mindste fedtethed. Kan reddes hvis man reagerer |
 | **Røgpunkt** | Vegansk smør brænder tidligere | Bland halvt med neutral olie til stegning ved høj varme |
