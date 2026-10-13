@@ -1,0 +1,25 @@
+name: release
+
+# Når et versionstag (fx v2.0.0) pushes, pakkes skill-mappen som sous-chef.zip
+# og lægges på en GitHub-release, så den kan hentes (og downloads kan tælles).
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pak skill-mappen
+        run: zip -r sous-chef.zip sous-chef -x '*/__pycache__/*' '*.pyc'
+      - name: Opret release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" sous-chef.zip \
+            --title "sous-chef $GITHUB_REF_NAME" \
+            --notes "Hent sous-chef.zip og upload den i Claude under Settings → Capabilities. Kræver Claude Code (Artifact-værktøjet)."

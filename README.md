@@ -7,6 +7,11 @@ med timere og fejlkilder.
 
 Bygget af Jakob Kornum. Skrevet på dansk, til danske køkkener. Kræver Claude Code (Artifact-værktøjet), fordi siden og profilen bor i en Artifact.
 
+## Installér
+
+Hent `sous-chef.zip` fra [Releases](../../releases/latest) og upload den i Claude under
+Settings → Capabilities. Skillen kræver Claude Code, fordi siden og din profil bor i en Artifact.
+
 ## Hvad den gør
 
 - **Scoper måltidet** - læser din menu kritisk (mangler den syre? for mange dejprojekter?),
