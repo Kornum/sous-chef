@@ -1,52 +1,64 @@
-# Datakontrakt for siden (Indkøb / Køkken / Opskrifter)
+# Datakontrakt for siden (Indkøb / Madlavning)
 
 Siden er færdigbygget i `templates/side.html`. Du leverer KUN data som JSON og bygger med
-`python scripts/byg_side.py data.json ud.html`. Scriptet validerer id'er, klokkeslæt,
-opskrift-referencer, pris (alle varer eller ingen), `kan_reddes` og trinnenes rækkefølge, og
-nægter at bygge hvis noget mangler - det er meningen, for en side der ser rigtig ud men
-har dublet-id'er mister afkrydsninger i butikken uden at nogen opdager det.
+`python scripts/byg_side.py data.json side.html --fuld`. Scriptet validerer id'er og
+nedlagte felter (bl.a. klokkeslæt) og nægter at bygge hvis noget mangler - det er meningen, for en side der
+ser rigtig ud men har dublet-id'er mister afkrydsninger i butikken uden at nogen opdager det.
 
-## Siden vises som en artifact i chatten
+## Publicering: én fast Artifact-side med db-lager
 
-Byg med `--fuld` (komplet HTML-dokument) og vis hele filen som ÉN HTML-artifact i svaret. Brugeren
-åbner chatten på telefonen og har siden der - ingen links, ingen installation. Opdatér SAMME
-artifact når planen ændres (nye trin, skubbet tid); lav ikke en ny hver gang. Sidens lager er nøglet
-på planens `id`, så afkrydsninger og timere holder så længe `id` og vare/trin-id'erne er de samme.
+Faste adresser - skift dem aldrig, og lav aldrig en ny artifact:
 
-**Vær ærlig om lageret.** Mens siden er åben, holder alt altid. Men siden forsøger at gemme i
-browserens lager, og i flere miljøer er det blokeret - bl.a. artifacts på claude.ai, hvor
-afkrydsninger typisk IKKE overlever at siden lukkes. Sig aldrig at noget overlever en lukket
-side, før brugeren har set det virke; sig i stedet "hold siden åben i butikken".
+- **Værktøjs-URL** (`url` i Artifact og ArtifactData): `https://claude.ai/code/artifact/877daac6-4e2f-4b14-9f1a-2b2e066db7c8`
+- **Brugerens link** (siden på telefonen): `https://claude.ai/artifact/HjQ4PA2ZUc4XwCcqSu2KpK`
 
-Kører skillen i Claude Code (ikke i almindelig Claude), findes et Artifact-værktøj der kan
-publicere filen som en privat webside med et link; brug det, hvis brugeren beder om et link.
+Flowet:
+
+1. **Eksisterende plan?** ArtifactData `get` på `aktiv/plan` giver `plan_id`; `get` på
+   `plandata/<plan_id>` (med `out_dir`) giver plan-JSON'en som fil - redigér den. Ny plan: nyt
+   id, skriv JSON forfra i scratchpad.
+2. Byg med `--fuld`.
+3. Er artifacten ikke læst i denne samtale endnu: læs den først (`Artifact` med `action: "read"`
+   og `url`), ellers afvises publiceringen.
+4. Publicér med `url` = værktøjs-URL og **altid** `capabilities: {"db": {}}` - det er en
+   fuld-sæt-deklaration, så den er sikker at gentage, og uden den mister siden sit lager.
+5. **Skriv planen tilbage til databasen:** `set` på `plandata/<plan_id>` (med `file_path` =
+   data-JSON'en) og `set` på `aktiv/plan` = `{"plan_id": "<plan_id>"}`. Databasen er eneste
+   planlager - skill-pakken er skrivebeskyttet i cloud.
+
+**Databasens indhold** (alle mod værktøjs-URL'en):
+
+- `planer/<plan-id>` - sidens egen tilstand: købt (`koebt`), fravalgt (`har`),
+  ingrediens-hakker (`ingr`), aktivt trin (`trin`) og kørende timere
+  (`timere`, slut-tidspunkter i epoch-ms). Siden skriver den selv; localStorage er kun lokal
+  cache. Læs den når brugeren spørger "hvad mangler jeg?" i stedet for at spørge dem.
+- `plandata/<plan-id>` - selve plan-JSON'en (skemaet nedenfor). Skrives af dig ved hver
+  publicering.
+- `aktiv/plan` - `{"plan_id": "..."}`, pointeren til den aktive plan.
+
+To regler følger af lageret:
+
+- **Skift ALDRIG id på en plan, vare eller et trin der er i brug** - så mister siden
+  afkrydsningen eller timeren for den. Nye varer/trin får nye id'er; slettede forsvinder bare.
+- Plan-id'et bruges som db-sti: kun bogstaver, tal og `. _ ~ + -`.
 
 ## To omgange når det haster
 
-1. **Første omgang, straks menuen er godkendt:** Indkøb fuld, `trin` og `opskrifter` må være
-   tomme lister. Byg og vis. Det er det brugeren har brug for i butikken.
-2. **Anden omgang:** skriv trin og opskrifter, byg igen, opdatér samme artifact.
-
-Kommandoen: `python scripts/byg_side.py data.json side.html --fuld` (data.json skriver du selv i
-arbejdsmappen; den behøver ikke gemmes bagefter - alt der er brug for, står i chatten og i artifacten).
-
-**Skift ALDRIG id på en vare eller et trin der allerede er i brug** - så mister siden afkrydsningen
-eller timeren for den. Nye varer får nye id'er; slettede varer forsvinder bare.
+1. **Første omgang, straks menuen er godkendt:** Indkøb fuld, `trin` må være en tom liste.
+   Byg og publicér. Det er det brugeren har brug for i butikken.
+2. **Anden omgang:** skriv trinnene, byg igen, opdatér samme artifact.
 
 ## Hvad siden gør selv (skriv det ikke i data)
 
-- Prøver at huske afkrydsninger, "har det", aktivt trin og valgt fane i browserens lager
-  (`localStorage`, nøgle `sous-chef:<id>`) - hvor lageret er tilladt. Er det blokeret (se ovenfor),
-  holder tilstanden kun mens siden er åben.
-- ⚠-varer sorteres øverst i deres afdeling. Antal i kurven tælles.
-- "Del listen"-knappen på Indkøb sender de resterende varer som ren tekst (navigator.share,
-  ellers udklipsholder) - vejen udenom browserlageret, når en anden handler.
-- Køkken-fanen holder skærmen tændt (wake lock), hvor browseren tillader det.
-- Køkken-fanen: swipe/knapper/piletaster mellem trin; timere gemmes som sluttidspunkt (rigtige
-  efter låst skærm), flere kan køre samtidig og vises som chips øverst; lyd + vibration ved 0.
-  Timere der udløb for mere end 5 minutter siden ryddes ved genåbning, så gammel snak ikke ringer.
-- "Se opskrift" hopper til opskriften. Skal tidsplanen skubbes (brugeren er bagud), sker det i
-  chatten: regn nye klokkeslæt og opdatér artifacten - der er ingen knap til det på siden.
+- Husker alt i artifact-db + localStorage som beskrevet ovenfor.
+- ⚠-varer sorteres øverst i deres afdeling. Antal og pris i kurven tælles.
+- Indkøb-fanen har en knap "Kopiér listen": lægger de varer der mangler i udklipsholderen som
+  kort tekst til sms, med et samlet prisskøn som første linje.
+- Madlavnings-fanen: trinliste øverst der kan foldes ud (alle trin med status og hop-til),
+  ét trin pr. skærm med swipe/knapper/piletaster, ingrediens-hakker pr. trin,
+  "Uddyb" som foldes ud, timere som chips på tværs af trin, lyd + vibration ved 0.
+- Hvert trin viser varighed ("~10 min i hænderne", "20 min ventetid"), aldrig klokkeslæt.
+  Der er ingen "jeg er bagud"-funktion, fordi der ingen klokkeslæt er at skubbe.
 
 ## Skema
 
@@ -54,7 +66,6 @@ eller timeren for den. Nye varer får nye id'er; slettede varer forsvinder bare.
 {
   "id": "unik-slug-for-denne-plan",
   "titel": "Fødselsdag lørdag",
-  "servering": [{"navn": "Kaffebord", "kl": "14:00"}],
   "estimat": {"samlet_min": 300, "note": "valgfri linje, fx 'heraf 3 t hvor dejen bare hviler'"},
   "indkoeb": {
     "butik_lukker": "valgfri linje øverst - kun hvis lukketid er tæt på",
@@ -67,39 +78,52 @@ eller timeren for den. Nye varer får nye id'er; slettede varer forsvinder bare.
     ]
   },
   "trin": [
-    {"id": "t1", "kl": "18:30", "titel": "kort bydeform", "ret": "hvilken ret",
+    {"id": "t1", "titel": "kort bydeform", "ret": "hvilken ret",
      "handling": "hvad man gør, 1-3 sætninger",
+     "ingredienser": ["400 g røde linser", "1 dåse hakkede tomater"],
      "kendetegn": "sanseindtrykket der siger det er tid - valgfri men næsten altid",
      "fejlkilde": {"tekst": "mekanismen, ikke 'pas på'", "kan_reddes": false},
+     "uddyb": "valgfri dybde: hvorfor, hvad rigtigt ser ud som, hvad man gør hvis det går galt.\nLinjeskift er ok.",
      "timer_min": 40,
-     "aktiv_min": 10,
-     "opskrift": "id på opskrift"}
-  ],
-  "opskrifter": [
-    {"id": "dahl", "navn": "Rød linsedahl", "antal": "10 personer",
-     "ingredienser": ["..."],
-     "fremgangsmaade": ["..."],
-     "sekvens": [{"handling": "...", "tid": "0:20", "kendetegn": "..."}],
-     "fejlkilder": [{"titel": "...", "tekst": "...", "kan_reddes": true}]}
+     "aktiv_min": 10}
   ]
 }
 ```
 
-Regler for indholdet:
+Der er IKKE længere et `opskrifter`-afsnit og ingen `opskrift`/`sekvens` på trin - alt bor i
+trinnene. Regler for indholdet:
 
-- **Trin ligger i tidsplanens rækkefølge på tværs af retter** - det er tidslinjen, ikke opskriften.
-  Dahlen inde i giflernes køletid er to trin efter hinanden med hver sin `ret`.
-- **`kl` er planlagt starttid** i TT:MM. Ét trin pr. ting man gør, ikke pr. ret.
+- **Trin ligger i den rækkefølge man laver dem på tværs af retter** - det er arbejdsgangen,
+  ikke opskriften. Dahlen inde i giflernes køletid er to trin efter hinanden med hver sin `ret`.
+- **Hvert trin bærer alt hvad det kræver.** `ingredienser` er præcis det der bruges i DET trin,
+  med vægt og mål ("400 g røde linser", ikke "linser"). Det er dig der splitter opskriften op.
+  Siden viser dem som hakkeliste ("Til dette trin").
+- **Mise en place-trin:** hver ret der har mere end et par ingredienser i ét ryk, starter med
+  et trin hvor alt måles op ("Mål alt op til dahlen") med den fulde ingrediensliste - så er
+  senere trins lister korte.
+- **Sekvenser hvor rækkefølgen ER opskriften** (tarka, karamel, emulsion) skrives som flere
+  små trin lige efter hinanden - ét pr. handling, hver med sit kendetegn og evt. fejlkilde.
+  Det er kendetegnet ("lyden er din timer"), der bærer dem.
+- **Ingen klokkeslæt.** Hverken `kl` på trin eller `servering` findes, og scriptet afviser dem.
+  Ét trin pr. ting man gør. Tiden bæres af `aktiv_min`, `timer_min` og `estimat`.
 - **`timer_min` kun hvor man faktisk venter** (hævning, køl, simren, ovn). Ikke på "ælt dejen".
-- **`aktiv_min` er hænderne i brug** på det trin - æltning 10, "vent 40 min på køl" 0. Siden
-  summerer det til "X ved gryderne". `estimat.samlet_min` er første trin til servering, inkl. al
-  ventetid; `estimat.note` er valgfri ("heraf 3 t hvor dejen bare hviler").
-- **`pris` pr. vare i kr, tal, skøn** på dansk supermarkedsniveau for den mængde der står. Siden
-  summerer til "ca. X kr at handle for" og tæller ned når man krydser af. Varer brugeren "har"
-  koster 0. Sæt den på alle varer eller ingen - en halv sum lyver.
-- **`sekvens`** kun for de opskrifter hvor rækkefølgen er selve opskriften (tarka, karamel,
-  emulsioner) - kolonnerne er trin, handling, tid, kendetegn.
-- **`kan_reddes`** sættes altid, true eller false. Det afgør hvor meget opmærksomhed fejlen fortjener.
+- **`aktiv_min` er hænderne i brug** på det trin. Siden summerer til "X ved gryderne".
+  `estimat.samlet_min` er første trin til færdig ret inkl. al ventetid.
+- **`uddyb` er dybden** der før boede i opskriften: hvorfor, hvordan rigtigt ser ud, hvad man
+  gør hvis det går galt. Foldes sammen som udgangspunkt - handling + kendetegn + fejlkilde
+  skal kunne stå alene uden den.
+- **`pris` pr. vare i kr, tal, skøn** på dansk supermarkedsniveau for den mængde der står.
+  Sæt den på alle varer eller ingen - en halv sum lyver.
+- **`kan_reddes`** sættes altid, true eller false.
 - Vare-id'er og trin-id'er: korte, stabile slugs. Genbrug dem ved genudgivelse.
 
-Se `templates/eksempel-data.json` for et fuldt eksempel (gifler + dahl, 5 trin, 2 opskrifter).
+Se `templates/eksempel-data.json` for et fuldt eksempel (gifler + dahl, inkl. en sekvens
+skrevet som mikro-trin).
+
+## Plan B
+
+Plan B gælder kun ægte fejl i en Code-session (Python nede, publicering afvist): skriv
+indkøbslisten som ren tekst i chatten, sorteret efter afdeling med ⚠ og forklarede mængder, og
+guid trinene ét ad gangen. Sig at det er nødløsningen. Lad aldrig som om siden er der, hvis den
+ikke er. Mangler værktøjerne helt (almindelig chat), er svaret ikke Plan B men henvisningen i
+SKILL.md: link til siden + Code-fanen.

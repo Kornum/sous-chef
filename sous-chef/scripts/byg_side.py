@@ -1,12 +1,11 @@
 """Fyld templates/side.html med data og skriv en færdig side.
 
 Brug:
-    python byg_side.py data.json ud.html            # fragment til Artifact-værktøjet
-    python byg_side.py data.json ud.html --fuld     # komplet HTML-dokument (fallback: åbn filen direkte)
+    python byg_side.py data.json ud.html            # fragment
+    python byg_side.py data.json ud.html --fuld     # komplet HTML-dokument (brug denne til publicering)
 
-data.json skal følge skemaet i references/side-data.md.
-Scriptet validerer det vigtigste (unikke id'er, klokkeslæt-format, opskrift-referencer,
-pris på alle varer eller ingen, kan_reddes på alle fejlkilder, trin i tidsorden) og stopper
+data.json skal følge skemaet i references/side-data.md (to faner: Indkøb og Madlavning).
+Scriptet validerer det vigtigste (unikke id'er, nedlagte felter som klokkeslæt) og stopper
 med en klar fejl i stedet for at levere en side der ser rigtig ud men opfører sig forkert.
 """
 import json, re, sys
@@ -15,34 +14,24 @@ from pathlib import Path
 HER = Path(__file__).resolve().parent
 SKABELON = HER.parent / "templates" / "side.html"
 
-# </head> og <body> er valgfrie tags i HTML; skabelonens <title>/<style> lander i head,
-# og den første <div> åbner body. Så står title og style rigtigt i dokumentet.
 FULD_HOVED = ('<!doctype html><html lang="da"><head><meta charset="utf-8">'
-              '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">')
-FULD_HALE = '</html>'
-
-KL = re.compile(r"(\d{1,2})[:.](\d{2})")
-
-
-def kl_min(kl):
-    m = KL.fullmatch(kl or "")
-    if not m or int(m.group(1)) > 23 or int(m.group(2)) > 59:
-        return None
-    return int(m.group(1)) * 60 + int(m.group(2))
+              '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">'
+              '</head><body>')
+FULD_HALE = '</body></html>'
 
 
 def valider(d):
     fejl = []
     if not d.get("id"):
-        fejl.append("mangler 'id' (bruges som nøgle for telefonens lager)")
-
-    for s in d.get("servering", []):
-        if not s.get("navn"):
-            fejl.append("servering uden navn")
-        if kl_min(s.get("kl")) is None:
-            fejl.append(f"servering '{s.get('navn')}': kl skal være TT:MM, fik {s.get('kl')!r}")
-
-    ids, med_pris, uden_pris = set(), [], []
+        fejl.append("mangler 'id' (nøgle for lager i localStorage og artifact-db)")
+    elif not re.fullmatch(r"[A-Za-z0-9._~+-]+", d["id"]):
+        fejl.append(f"id '{d['id']}' er ugyldigt som db-sti: brug kun bogstaver, tal og . _ ~ + -")
+    if d.get("servering"):
+        fejl.append("'servering' er nedlagt: planen har ingen klokkeslæt eller leveringstidspunkt. "
+                    "Fjern feltet, og skriv varigheden i estimat")
+    if "opskrifter" in d:
+        fejl.append("'opskrifter' findes ikke længere - al detalje bor i trinnene (se references/side-data.md)")
+    ids = set()
     for a in d.get("indkoeb", {}).get("afdelinger", []):
         for v in a.get("varer", []):
             if not v.get("id"):
@@ -50,58 +39,31 @@ def valider(d):
             elif v["id"] in ids:
                 fejl.append(f"dublet vare-id: {v['id']}")
             ids.add(v.get("id"))
-            if "pris" in v:
-                if not isinstance(v["pris"], (int, float)):
-                    fejl.append(f"vare {v.get('id')}: pris skal være et tal i kr, fik {v['pris']!r}")
-                med_pris.append(v.get("id"))
-            else:
-                uden_pris.append(v.get("id"))
-    if med_pris and uden_pris:
-        fejl.append("pris skal stå på ALLE varer eller ingen - en halv sum lyver. "
-                    f"Mangler på: {', '.join(str(i) for i in uden_pris[:5])}"
-                    + (" ..." if len(uden_pris) > 5 else ""))
-
-    def tjek_fejlkilde(f, hvor):
-        if not isinstance(f, dict) or not isinstance(f.get("kan_reddes"), bool):
-            fejl.append(f"{hvor}: fejlkilde skal have kan_reddes som true/false")
-
-    opskrift_ids = set()
-    for o in d.get("opskrifter", []):
-        if not o.get("id"):
-            fejl.append(f"opskrift uden id: {o.get('navn')}")
-        elif o["id"] in opskrift_ids:
-            fejl.append(f"dublet opskrift-id: {o['id']}")
-        opskrift_ids.add(o.get("id"))
-        for f in o.get("fejlkilder", []):
-            tjek_fejlkilde(f, f"opskrift {o.get('id')}")
-
-    tids, forrige, spring = set(), None, 0
+            if "pris" in v and not isinstance(v["pris"], (int, float)):
+                fejl.append(f"vare {v.get('id')}: pris skal være et tal i kr, fik {v['pris']!r}")
+    tids = set()
     for t in d.get("trin", []):
         if not t.get("id"):
             fejl.append(f"trin uden id: {t.get('titel')}")
         elif t["id"] in tids:
             fejl.append(f"dublet trin-id: {t['id']}")
         tids.add(t.get("id"))
-        kl = t.get("kl")
-        if kl and kl_min(kl) is None:
-            fejl.append(f"trin {t.get('id')}: kl skal være TT:MM, fik '{kl}'")
-        elif kl:
-            m = kl_min(kl)
-            if forrige is not None and m < forrige:
-                spring += 1
-            forrige = m
+        if not t.get("titel"):
+            fejl.append(f"trin {t.get('id')}: mangler titel")
+        for gammel in ("opskrift", "sekvens"):
+            if gammel in t:
+                fejl.append(f"trin {t.get('id')}: '{gammel}' findes ikke længere - skriv detaljen ind i trinnet "
+                            "(ingredienser/handling/uddyb), en sekvens bliver til flere små trin")
+        if "kl" in t:
+            fejl.append(f"trin {t.get('id')}: 'kl' er nedlagt - ingen klokkeslæt på trin. "
+                        "Skriv varigheden i aktiv_min og timer_min i stedet")
         if "timer_min" in t and not isinstance(t["timer_min"], int):
             fejl.append(f"trin {t.get('id')}: timer_min skal være et heltal (minutter)")
         if "aktiv_min" in t and not isinstance(t["aktiv_min"], int):
             fejl.append(f"trin {t.get('id')}: aktiv_min skal være et heltal (minutter)")
-        if "fejlkilde" in t:
-            tjek_fejlkilde(t["fejlkilde"], f"trin {t.get('id')}")
-        if t.get("opskrift") and t["opskrift"] not in opskrift_ids:
-            fejl.append(f"trin {t.get('id')} peger på ukendt opskrift '{t['opskrift']}'")
-    if spring > 1:
-        fejl.append("trin skal ligge i tidsplanens rækkefølge (ét hop bagud er tilladt, "
-                    f"når planen krydser midnat - fandt {spring})")
-
+        ing = t.get("ingredienser")
+        if ing is not None and (not isinstance(ing, list) or not all(isinstance(x, str) for x in ing)):
+            fejl.append(f"trin {t.get('id')}: ingredienser skal være en liste af tekster ('400 g røde linser')")
     est = d.get("estimat")
     if est is not None and "samlet_min" in est and not isinstance(est["samlet_min"], int):
         fejl.append("estimat.samlet_min skal være et heltal (minutter)")

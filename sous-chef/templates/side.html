@@ -75,9 +75,8 @@ button.ghost:active{background:var(--chip)}
 .harliste summary::before{content:"▸ ";color:var(--muted)}
 .harliste[open] summary::before{content:"▾ "}
 .harliste .vare{opacity:.72}
-.delknap{width:100%;margin:2px 0 18px}
 
-/* ---- Koekken ---- */
+/* ---- Madlavning ---- */
 .strip{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
 .strip .chip{display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:14px;font-weight:600;box-shadow:var(--shadow)}
 .strip .chip .dot{width:9px;height:9px;border-radius:50%;flex:none}
@@ -85,9 +84,21 @@ button.ghost:active{background:var(--chip)}
 .strip .chip.done{background:var(--grad-warn);border-color:var(--warn);color:#fff;animation:pulse 1s ease-in-out infinite}
 .strip .chip.done .ct{color:#fff}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.62}}
+.tidslinje{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:12px;box-shadow:var(--shadow);overflow:hidden}
+.tidslinje summary{list-style:none;cursor:pointer;padding:12px 14px;display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:14px;font-weight:700;color:var(--muted)}
+.tidslinje summary::-webkit-details-marker{display:none}
+.tidslinje summary b{color:var(--fg);font-variant-numeric:tabular-nums}
+.tidslinje summary .tnext{flex:1;min-width:0;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+.tl-raekke{display:flex;align-items:center;gap:10px;padding:10px 14px;border-top:1px solid var(--line);font-size:14.5px;cursor:pointer}
+.tl-raekke .dot{width:8px;height:8px;border-radius:50%;flex:none}
+.tl-raekke .ttitel{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tl-raekke .tmark{flex:none;font-size:12px;font-weight:800;color:var(--muted)}
+.tl-raekke.gjort{opacity:.55}
+.tl-raekke.gjort .ttitel{text-decoration:line-through}
+.tl-raekke.nu{background:var(--accent-soft)}
+.tl-raekke.nu .tmark{color:var(--accent)}
 .kort{background:linear-gradient(180deg,color-mix(in srgb,var(--accent-soft) 55%,var(--card)),var(--card) 130px);border:1px solid var(--line);border-radius:20px;padding:20px 18px;box-shadow:var(--shadow);touch-action:pan-y;user-select:none;-webkit-user-select:none}
 .kort .top{display:flex;justify-content:space-between;align-items:baseline;color:var(--muted);font-size:13.5px;font-weight:600}
-.kort .kl{font-weight:800;color:var(--fg);font-size:19px;font-variant-numeric:tabular-nums}
 .kort .ret{display:inline-flex;align-items:center;gap:7px;background:var(--soft);border-radius:999px;padding:4px 12px;font-size:13px;font-weight:700;margin:12px 0 2px}
 .kort .ret .dot{width:9px;height:9px;border-radius:50%;flex:none}
 .kort h2{margin:8px 0 6px;font-size:24px;font-weight:800;letter-spacing:-.01em;line-height:1.15}
@@ -98,60 +109,48 @@ button.ghost:active{background:var(--chip)}
 .blok.kende b{color:var(--ok)}
 .blok.fejl{background:var(--warn-soft);color:var(--fg)}
 .blok.fejl b{color:var(--warn)}
+.ingr{background:var(--soft);border-radius:12px;padding:10px 13px;margin:11px 0}
+.ingr b{display:block;font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;font-weight:800;color:var(--muted)}
+.ingr .irk{display:flex;align-items:center;gap:9px;padding:5px 0;font-size:15.5px;cursor:pointer}
+.ingr .irk .ibox{width:20px;height:20px;border-radius:6px;border:2px solid var(--line);background:var(--card);flex:none;display:grid;place-items:center;font-size:13px;color:#fff}
+.ingr .irk.brugt .ibox{background:var(--grad-ok);border-color:var(--ok)}
+.ingr .irk.brugt span:last-child{text-decoration:line-through;color:var(--muted)}
+.uddyb{margin:11px 0}
+.uddyb summary{list-style:none;cursor:pointer;color:var(--muted);font-size:13px;font-weight:700;padding:4px 0}
+.uddyb summary::-webkit-details-marker{display:none}
+.uddyb summary::before{content:"▸ "}
+.uddyb[open] summary::before{content:"▾ "}
+.uddyb .utekst{color:var(--fg);opacity:.85;font-size:15px;line-height:1.45;padding:6px 0 2px;white-space:pre-line}
 .timer{display:flex;align-items:center;gap:14px;margin:16px 0 6px}
 .timer .tid{font-variant-numeric:tabular-nums;font-size:40px;font-weight:800;min-width:132px;letter-spacing:-.02em}
 .timer .tid.done{color:var(--warn)}
 .timer button{flex:1}
 .knapper{display:flex;gap:9px;margin-top:14px}
 .knapper button{flex:1}
-.dots{display:flex;gap:5px;justify-content:center;margin:16px 0 0;flex-wrap:wrap}
-.dots i{width:8px;height:8px;border-radius:50%;background:var(--line);display:block;transition:background .15s}
-.dots i.on{background:var(--accent);transform:scale(1.25)}
-.dots i.done{background:var(--ok)}
 .pager{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:560px;background:linear-gradient(to top,var(--bg) 72%,transparent);border-top:1px solid var(--line);padding:11px 12px calc(11px + env(safe-area-inset-bottom));display:flex;gap:10px;align-items:center}
 .pager button{padding:15px 16px;border-radius:13px;border:1px solid var(--line);background:var(--card);color:var(--fg);font:inherit;font-weight:800;font-size:16px;flex:1;box-shadow:var(--shadow)}
 .pager button:disabled{opacity:.4}
 .pager button.done{background:var(--grad-ok);border-color:var(--ok);color:#fff}
 .pager .pos{color:var(--muted);font-size:13.5px;font-weight:700;flex:none;font-variant-numeric:tabular-nums;min-width:52px;text-align:center}
-
-/* ---- Opskrifter ---- */
-.opsnav{display:flex;flex-wrap:wrap;gap:7px;margin:0 2px 14px}
-.opsnav a{background:var(--soft);color:var(--fg);border-radius:999px;padding:8px 14px;font-size:14px;font-weight:700;text-decoration:none}
-.opsnav a:active{background:var(--chip)}
-.ops{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:17px;margin-bottom:14px;box-shadow:var(--shadow);scroll-margin-top:70px}
-.ops h2{margin:0 0 2px;font-size:21px;font-weight:800;letter-spacing:-.01em}
-.ops .antal{color:var(--muted);font-size:14px;margin-bottom:10px;font-weight:600}
-.ops h3{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:16px 0 6px;font-weight:800}
-.ops ul,.ops ol{margin:0;padding-left:22px}
-.ops li{margin:5px 0;line-height:1.4}
-.ops table{width:100%;border-collapse:collapse;font-size:14px}
-.ops th,.ops td{text-align:left;padding:8px 7px;border-bottom:1px solid var(--line);vertical-align:top}
-.ops tr:last-child td{border-bottom:0}
-.ops th{color:var(--muted);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.04em}
-.ops td.n{font-variant-numeric:tabular-nums;color:var(--muted);font-weight:700;width:22px}
-.ops td.t{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
-.tablewrap{overflow-x:auto;margin:0 -3px}
-.ops .blok{margin:8px 0}
 .toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:11px 18px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;transition:opacity .2s;pointer-events:none;z-index:9;box-shadow:var(--shadow)}
 .toast.vis{opacity:1}
-/* ---- tilføjet efter designerens runde: estimat, pris, iPhone-note ---- */
 .estimat{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:space-between;background:var(--card);border:1px solid var(--line);border-radius:13px;padding:11px 13px;margin-bottom:12px;font-size:14.5px;box-shadow:var(--shadow)}
 .estimat b{font-size:17px;font-weight:800;font-variant-numeric:tabular-nums}
 .vare .pris{color:var(--muted);font-size:13px;font-weight:600;white-space:nowrap}
 .kort .note{text-align:left;padding:4px 0 0}
+.kopi{margin:0 0 16px}
+.kort .tid-linje{color:var(--muted);font-size:13.5px;font-weight:600}
 </style>
 
 <div class="app">
-  <header><h1 id="titel"></h1><div class="sub" id="servering"></div></header>
+  <header><h1 id="titel"></h1></header>
   <nav class="tabs">
     <button data-fane="indkoeb">Indkøb</button>
-    <button data-fane="koekken">Køkken</button>
-    <button data-fane="opskrifter">Opskrifter</button>
+    <button data-fane="madlavning">Madlavning</button>
   </nav>
   <main>
     <section id="fane-indkoeb"></section>
-    <section id="fane-koekken" class="hidden"></section>
-    <section id="fane-opskrifter" class="hidden"></section>
+    <section id="fane-madlavning" class="hidden"></section>
   </main>
   <div class="pager hidden" id="pager">
     <button id="forrige">‹ Forrige</button>
@@ -171,13 +170,53 @@ const DATA = JSON.parse(document.getElementById('data').textContent);
 const KEY = 'sous-chef:' + (DATA.id || 'side');
 const esc = s => String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-// ---------- state ----------
+// ---------- lokal tilstand ----------
 let S;
 try { S = JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e){ S = {}; }
-S.koebt ||= {}; S.har ||= {}; S.timere ||= {}; S.ringet ||= {}; S.trin ||= 0; S.fane ||= 'indkoeb';
-const gem = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} };
-// timere der udløb for mere end 5 min siden er gammel snak - ryd dem, så en genåbnet side ikke ringer
-Object.keys(S.timere).forEach(id => { if (S.timere[id] < Date.now() - 5*60000) { delete S.timere[id]; delete S.ringet[id]; } });
+S.koebt ||= {}; S.har ||= {}; S.timere ||= {}; S.ingr ||= {}; S.trin ||= 0; S.opdateret ||= 0;
+const faner = ['indkoeb','madlavning'];
+if (!faner.includes(S.fane)) S.fane = 'indkoeb';
+
+const gemLokal = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} };
+const gem = () => { S.opdateret = Date.now(); gemLokal(); push(); };
+
+// ---------- delt lager (artifact-db) ----------
+// Tilstanden bor i artifactens database (dokumentet planer/<plan-id>), så den overlever at
+// siden lukkes og følger med på tværs af enheder. localStorage er kun en lokal cache.
+// Fanen synkes ikke - den er pr. enhed.
+let fjern = null, pushT = null, pushKoerer = false, pushVenter = false;
+function push(){
+  if (!fjern) return;
+  clearTimeout(pushT);
+  pushT = setTimeout(async () => {
+    if (pushKoerer) { pushVenter = true; return; }
+    pushKoerer = true;
+    try { await fjern.set(JSON.parse(JSON.stringify(S))); } catch(e){}
+    pushKoerer = false;
+    if (pushVenter) { pushVenter = false; push(); }
+  }, 600);
+}
+function anvendFjern(d){
+  if (!d || typeof d.opdateret !== 'number' || d.opdateret <= S.opdateret) return;
+  ['koebt','har','timere','ingr'].forEach(k => { S[k] = (d[k] && typeof d[k] === 'object') ? d[k] : {}; });
+  if (typeof d.trin === 'number') S.trin = d.trin;
+  S.opdateret = d.opdateret;
+  gemLokal();
+  renderAktiv();
+}
+(async () => {
+  try {
+    if (!(window.claude && window.claude.use)) return;
+    const db = await window.claude.use('db');
+    if (!db) return;
+    fjern = db.doc('planer/' + (DATA.id || 'side'));
+    const snap = await fjern.get();
+    const rd = snap.exists ? (snap.data() || {}) : {};
+    anvendFjern(rd);
+    if (S.opdateret && (rd.opdateret || 0) < S.opdateret) push();
+    fjern.onSnapshot(s => { if (s.exists && !s.metadata.hasPendingWrites) anvendFjern(s.data()); }, () => {});
+  } catch(e){}
+})();
 
 const toastEl = document.getElementById('toast');
 let toastT;
@@ -186,40 +225,20 @@ function toast(t){ toastEl.textContent=t; toastEl.classList.add('vis'); clearTim
 // ---------- header ----------
 document.getElementById('titel').textContent = DATA.titel || 'Sous-chef';
 document.title = DATA.titel || 'Sous-chef';
-document.getElementById('servering').innerHTML = (DATA.servering||[]).map(s=>'<span class="stag">'+esc(s.navn)+' <b>'+esc(s.kl)+'</b></span>').join('');
 
 // ---------- faner ----------
-const faner = ['indkoeb','koekken','opskrifter'];
 document.querySelectorAll('nav.tabs button').forEach(b => b.onclick = () => visFane(b.dataset.fane));
+function renderAktiv(){ if (S.fane==='madlavning') renderMadlavning(); else renderIndkoeb(); }
 function visFane(f){
-  S.fane = f; gem();
+  S.fane = f; gemLokal();
   faner.forEach(x => {
     document.getElementById('fane-'+x).classList.toggle('hidden', x!==f);
     document.querySelector('nav.tabs button[data-fane="'+x+'"]').classList.toggle('on', x===f);
   });
-  document.getElementById('pager').classList.toggle('hidden', f!=='koekken' || !trin.length);
-  if (f==='indkoeb') renderIndkoeb();
-  if (f==='koekken') renderKoekken();
-  if (f==='opskrifter') renderOpskrifter();
-  holdSkaerm(f==='koekken');
+  document.getElementById('pager').classList.toggle('hidden', f!=='madlavning');
+  renderAktiv();
   window.scrollTo(0,0);
 }
-
-// ---------- wake lock: skærmen holder sig tændt ved komfuret ----------
-let wl = null;
-async function holdSkaerm(on){
-  try {
-    if (on && 'wakeLock' in navigator && !wl){
-      const laas = await navigator.wakeLock.request('screen');
-      wl = laas;
-      // kun nulstil hvis det stadig er DENNE lås - ellers kan et hurtigt faneskift miste en ny lås
-      laas.addEventListener('release', () => { if (wl === laas) wl = null; });
-    }
-    else if (!on && wl){ const w = wl; wl = null; await w.release(); }
-  } catch(e){ wl = null; }
-}
-// låsen slippes af browseren når fanen forlades - tag den igen når man kommer tilbage
-document.addEventListener('visibilitychange', () => { if (document.visibilityState==='visible' && S.fane==='koekken') holdSkaerm(true); });
 
 // ret-farver: en stabil prik pr. ret, så man kan se på tværs af trin hvad der hører sammen
 const RETFARVER=['#2e6b3e','#c4401d','#b8860b','#3b6ea5','#8a4fa3','#2a8c8c'];
@@ -240,8 +259,8 @@ function renderIndkoeb(){
     const total = medPris.reduce((s,v)=>s+v.pris,0), iKurv = medPris.filter(v=>S.koebt[v.id]).reduce((s,v)=>s+v.pris,0);
     h += '<div class="estimat"><span>Ca. <b>'+Math.round(total)+' kr</b> at handle for (skøn)</span><span>'+Math.round(iKurv)+' kr i kurven</span></div>';
   }
+  h += '<button class="big kopi" id="kopi">Kopiér listen</button>';
   h += '<div class="pwrap"><div class="ptop"><span><b>'+koebt+'</b> af '+aktive.length+' i kurven</span><span>'+(alle.length-aktive.length? (alle.length-aktive.length)+' har du i forvejen':'')+'</span></div><div class="pbar"><i style="width:'+(aktive.length? Math.round(100*koebt/aktive.length):0)+'%"></i></div></div>';
-  if (aktive.length) h += '<button class="ghost delknap" id="delliste">Del listen</button>';
   I.afdelinger.forEach(a => {
     const varer = a.varer.filter(v=>!S.har[v.id]).sort((x,y)=>(y.kritisk?1:0)-(x.kritisk?1:0));
     if (!varer.length) return;
@@ -256,6 +275,7 @@ function renderIndkoeb(){
     h += '</details>';
   }
   el.innerHTML = h;
+  document.getElementById('kopi').onclick = kopier;
   el.querySelectorAll('.vare').forEach(n => {
     const id = n.dataset.id;
     n.querySelector('.box').onclick = () => { S.koebt[id] = !S.koebt[id]; gem(); renderIndkoeb(); };
@@ -267,27 +287,26 @@ function renderIndkoeb(){
       gem(); renderIndkoeb();
     };
   });
-  const del = document.getElementById('delliste');
-  if (del) del.onclick = delListe;
 }
-// deling: ren tekst, så listen kan sendes til den der handler - og overlever uanset browserlager
+// kort tekst til sms: samlet skøn først, så varer der stadig mangler (ikke købt, ikke "har det")
 function listeTekst(){
   const I = DATA.indkoeb || {afdelinger:[]};
-  const ud = ['Indkøb: ' + (DATA.titel || 'Sous-chef')];
-  I.afdelinger.forEach(a => {
-    const varer = a.varer.filter(v=>!S.har[v.id] && !S.koebt[v.id]).sort((x,y)=>(y.kritisk?1:0)-(x.kritisk?1:0));
-    if (!varer.length) return;
-    ud.push('', a.navn.toUpperCase());
-    varer.forEach(v => ud.push('· '+(v.kritisk?'⚠ ':'')+v.navn+(v.maengde?' - '+v.maengde:'')+(v.note?' ('+v.note+')':'')));
-  });
-  if (I.butik_lukker) ud.push('', I.butik_lukker);
-  return ud.join('\n');
+  const varer = I.afdelinger.flatMap(a=>a.varer).filter(v=>!S.har[v.id] && !S.koebt[v.id]);
+  const medPris = varer.filter(v=>typeof v.pris==='number');
+  const total = medPris.length===varer.length && varer.length ? Math.round(medPris.reduce((s,v)=>s+v.pris,0)) : null;
+  const linjer = varer.map(v => v.navn.replace(/\s*\(.*?\)/g,'') + (v.maengde? ' ' + String(v.maengde).replace(/\s*\(.*?\)/g,'') : ''));
+  return (total!==null ? 'Indkøb, ca. '+total+' kr\n' : 'Indkøb\n') + linjer.join('\n');
 }
-async function delListe(){
+async function kopier(){
   const tekst = listeTekst();
-  try { if (navigator.share) { await navigator.share({ title: DATA.titel || 'Indkøbsliste', text: tekst }); return; } } catch(e){ if (e && e.name==='AbortError') return; }
-  try { await navigator.clipboard.writeText(tekst); toast('Listen er kopieret - sæt den ind i en besked'); return; } catch(e){}
-  toast('Kunne ikke dele her - marker og kopiér selv');
+  try { await navigator.clipboard.writeText(tekst); toast('Listen er kopieret'); return; } catch(e){}
+  try {
+    const ta = document.createElement('textarea');
+    ta.value = tekst; ta.setAttribute('readonly',''); ta.style.cssText = 'position:fixed;left:-9999px;top:0';
+    document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, tekst.length);
+    const ok = document.execCommand('copy'); document.body.removeChild(ta);
+    toast(ok ? 'Listen er kopieret' : 'Kunne ikke kopiere');
+  } catch(e){ toast('Kunne ikke kopiere'); }
 }
 function vareHtml(v, iHar){
   return '<div class="vare'+(S.koebt[v.id]&&!iHar?' koebt':'')+'" data-id="'+esc(v.id)+'">'
@@ -297,17 +316,21 @@ function vareHtml(v, iHar){
     + '<button class="har">'+(iHar?'Tilbage':'Har det')+'</button></div>';
 }
 
-// ---------- KØKKEN ----------
+// ---------- MADLAVNING ----------
 const trin = DATA.trin || [];
+let tlAaben = false;
 function timerMin(m){ const t=Math.floor(m/60), r=m%60; return t? (t+' t'+(r?' '+r+' min':'')) : (r+' min'); }
 function fmt(ms){
   const neg = ms<0; ms = Math.abs(ms);
   const s = Math.round(ms/1000), mm = Math.floor(s/60), ss = s%60;
   return (neg?'-':'')+String(mm).padStart(2,'0')+':'+String(ss).padStart(2,'0');
 }
-function renderKoekken(){
-  const el = document.getElementById('fane-koekken');
-  if (!trin.length){ el.innerHTML = '<p class="note">Ingen trin endnu.</p>'; return; }
+function renderMadlavning(){
+  const el = document.getElementById('fane-madlavning');
+  if (!trin.length){ el.innerHTML = '<p class="note">Ingen trin endnu - de kommer når planen er skrevet.</p>'; return; }
+  // åben-tilstand læses fra DOM, ikke fra toggle-events - de kommer asynkront og kan være bagud
+  const gammelTl = document.getElementById('tidslinje');
+  if (gammelTl) tlAaben = gammelTl.open;
   S.trin = Math.max(0, Math.min(S.trin, trin.length-1));
   const t = trin[S.trin];
   let h = '<div class="strip" id="status"></div>';
@@ -320,43 +343,68 @@ function renderKoekken(){
     if (E.note) dele.push(esc(E.note));
     h += '<div class="estimat">'+dele.map(d=>'<span>'+d+'</span>').join('')+'</div>';
   }
+  // trinliste: alle trin med status - fold ud, hop direkte til et trin
+  const naeste = trin[S.trin+1];
+  h += '<details class="tidslinje" id="tidslinje"'+(tlAaben?' open':'')+'>';
+  h += '<summary><span>Trin <b>'+(S.trin+1)+'</b> af '+trin.length+'</span><span class="tnext">'+(naeste? 'næste: '+esc(naeste.titel) : 'sidste trin')+'</span></summary>';
+  trin.forEach((x,i) => {
+    h += '<div class="tl-raekke'+(i<S.trin?' gjort':i===S.trin?' nu':'')+'" data-i="'+i+'">'
+      + '<span class="dot" style="background:'+retFarve(x.ret)+'"></span>'
+      + '<span class="ttitel">'+esc(x.titel)+'</span>'
+      + '<span class="tmark">'+(S.timere[x.id]?'⏱ ':'')+(i<S.trin?'✓':i===S.trin?'▶':'')+'</span></div>';
+  });
+  h += '</details>';
   h += '<div class="kort" id="kort">';
-  h += '<div class="top"><span class="kl">'+esc(t.kl||'')+'</span><span>trin '+(S.trin+1)+' af '+trin.length+'</span></div>';
+  const tidDele = [];
+  if (t.aktiv_min) tidDele.push('~'+t.aktiv_min+' min i hænderne');
+  if (t.timer_min) tidDele.push(timerMin(t.timer_min)+' ventetid');
+  h += '<div class="top"><span class="tid-linje">'+tidDele.join(' · ')+'</span></div>';
   h += '<h2>'+esc(t.titel)+'</h2>';
   if (t.ret) h += '<span class="ret"><span class="dot" style="background:'+retFarve(t.ret)+'"></span>'+esc(t.ret)+'</span>';
   h += '<div class="handling">'+esc(t.handling)+'</div>';
+  if (t.ingredienser && t.ingredienser.length){
+    const brugt = S.ingr[t.id] || {};
+    h += '<div class="ingr"><b>Til dette trin</b>' + t.ingredienser.map((navn,i) =>
+      '<div class="irk'+(brugt[i]?' brugt':'')+'" data-i="'+i+'"><span class="ibox">'+(brugt[i]?'✓':'')+'</span><span>'+esc(navn)+'</span></div>').join('') + '</div>';
+  }
   if (t.kendetegn) h += '<div class="blok kende"><b>Sådan ved du det er tid</b>'+esc(t.kendetegn)+'</div>';
   if (t.fejlkilde) h += '<div class="blok fejl"><b>Fejlkilde'+(t.fejlkilde.kan_reddes===false?' - kan ikke reddes':t.fejlkilde.kan_reddes===true?' - kan reddes':'')+'</b>'+esc(t.fejlkilde.tekst)+'</div>';
+  if (t.uddyb) h += '<details class="uddyb"><summary>Uddyb</summary><div class="utekst">'+esc(t.uddyb)+'</div></details>';
   if (t.timer_min){
     h += '<div class="timer"><span class="tid" id="tid">'+fmt(t.timer_min*60000)+'</span><button class="big" id="timerknap">Start '+t.timer_min+' min</button></div>';
     // Kan visningen ikke sende notifikationer (iPhone-fane, indlejret visning), så sig det én gang, kort.
     if (!('Notification' in window))
       h += '<p class="note">Denne visning kan ikke sende besked når timeren er færdig - hold siden åben, så ringer og vibrerer den.</p>';
   }
-  if (t.opskrift) h += '<div class="knapper"><button class="ghost" id="tilops">Se opskrift</button></div>';
   h += '</div>';
-  h += '<div class="dots">'+trin.map((x,i)=>'<i class="'+(i===S.trin?'on':i<S.trin?'done':'')+'"></i>').join('')+'</div>';
   el.innerHTML = h;
 
   const pos = document.getElementById('pos');
   pos.textContent = (S.trin+1)+' / '+trin.length;
-  pos.classList.toggle('faerdig', S.trin===trin.length-1);
   document.getElementById('forrige').disabled = S.trin===0;
   document.getElementById('naeste').textContent = S.trin===trin.length-1 ? 'Færdig ✓' : 'Næste ›';
   document.getElementById('naeste').classList.toggle('done', S.trin===trin.length-1);
 
+  const tl = document.getElementById('tidslinje');
+  // hop fra tidslinjen klapper den sammen - man har valgt sit trin og vil se kortet.
+  // Luk i DOM'en før re-render: næste render læser åben-tilstanden derfra.
+  tl.querySelectorAll('.tl-raekke').forEach(r => r.onclick = () => { tl.open = false; S.trin = +r.dataset.i; gem(); renderMadlavning(); });
+  el.querySelectorAll('.irk').forEach(r => r.onclick = () => {
+    const b = S.ingr[t.id] || (S.ingr[t.id] = {});
+    const i = r.dataset.i;
+    if (b[i]) delete b[i]; else b[i] = true;
+    gem(); renderMadlavning();
+  });
   const tk = document.getElementById('timerknap');
   if (tk) tk.onclick = () => {
-    if (S.timere[t.id]) { delete S.timere[t.id]; delete S.ringet[t.id]; toast('Timer stoppet'); }
+    if (S.timere[t.id]) { delete S.timere[t.id]; toast('Timer stoppet'); }
     else { S.timere[t.id] = Date.now() + t.timer_min*60000; toast('Timer startet'); bedOmNotifikation(); }
     gem(); tick();
   };
-  const to = document.getElementById('tilops');
-  if (to) to.onclick = () => { visFane('opskrifter'); const n=document.getElementById('ops-'+t.opskrift); if(n) n.scrollIntoView({behavior:'smooth'}); };
   swipe(document.getElementById('kort'));
   tick();
 }
-function gaa(d){ S.trin = Math.max(0, Math.min(trin.length-1, S.trin+d)); gem(); renderKoekken(); }
+function gaa(d){ S.trin = Math.max(0, Math.min(trin.length-1, S.trin+d)); gem(); renderMadlavning(); }
 document.getElementById('forrige').onclick = () => gaa(-1);
 document.getElementById('naeste').onclick = () => { if (S.trin===trin.length-1) toast('Maden er på bordet. Godt gået.'); else gaa(1); };
 function swipe(el){
@@ -369,23 +417,20 @@ function swipe(el){
     if (Math.abs(dx)>60 && Math.abs(dx)>Math.abs(dy)*1.5) gaa(dx<0?1:-1);
   }, {passive:true});
 }
-document.addEventListener('keydown', e => { if (S.fane!=='koekken') return; if (e.key==='ArrowRight') gaa(1); if (e.key==='ArrowLeft') gaa(-1); });
+document.addEventListener('keydown', e => { if (S.fane!=='madlavning') return; if (e.key==='ArrowRight') gaa(1); if (e.key==='ArrowLeft') gaa(-1); });
 
 // ---------- timere ----------
+const ringet = {};
 function tick(){
   const now = Date.now();
   const st = document.getElementById('status');
   if (st){
-    const html = Object.keys(S.timere).map(id => {
+    st.innerHTML = Object.keys(S.timere).map(id => {
       const t = trin.find(x=>x.id===id); if (!t) return '';
       const rest = S.timere[id]-now;
       return '<span class="chip'+(rest<=0?' done':'')+'" data-id="'+esc(id)+'"><span class="dot" style="background:'+retFarve(t.ret)+'"></span>'+esc(t.titel)+' <span class="ct">'+(rest<=0?'FÆRDIG':fmt(rest))+'</span></span>';
     }).join('');
-    // rør kun DOM'en når indholdet faktisk har ændret sig - ellers ødelægges et igangværende tryk
-    if (st._h !== html){
-      st._h = html; st.innerHTML = html;
-      st.querySelectorAll('.chip').forEach(c => c.onclick = () => { const i = trin.findIndex(x=>x.id===c.dataset.id); if (i>=0){ S.trin=i; gem(); renderKoekken(); } });
-    }
+    st.querySelectorAll('.chip').forEach(c => c.onclick = () => { const i = trin.findIndex(x=>x.id===c.dataset.id); if (i>=0){ S.trin=i; gem(); renderMadlavning(); } });
   }
   const t = trin[S.trin], tidEl = document.getElementById('tid'), tk = document.getElementById('timerknap');
   if (t && tidEl){
@@ -395,7 +440,7 @@ function tick(){
       tk.textContent = rest<=0 ? 'Nulstil' : 'Stop';
     } else { tidEl.textContent = fmt(t.timer_min*60000); tidEl.classList.remove('done'); tk.textContent = 'Start '+t.timer_min+' min'; }
   }
-  Object.keys(S.timere).forEach(id => { if (S.timere[id]-now<=0 && !S.ringet[id]) { S.ringet[id]=true; gem(); ring(); notifikation(id); } });
+  Object.keys(S.timere).forEach(id => { if (S.timere[id]-now<=0 && !ringet[id]) { ringet[id]=true; ring(); notifikation(id); } });
 }
 // ---------- notifikationer ----------
 // Browserens egne notifikationer: virker når fanen er i baggrunden eller telefonen viser noget andet.
@@ -407,12 +452,10 @@ function bedOmNotifikation(){
 function notifikation(id){
   if (!('Notification' in window) || Notification.permission!=='granted') return;
   const t = trin.find(x=>x.id===id); if (!t) return;
-  const vis = () => { try {
-    const n = new Notification('Timer færdig: '+t.titel, { body: t.kendetegn || t.handling || '', tag: 'sous-chef-'+id, renotify: true });
-    n.onclick = () => { window.focus(); const i=trin.findIndex(x=>x.id===id); if(i>=0){ S.trin=i; gem(); visFane('koekken'); } n.close(); };
-  } catch(e){} };
-  // på Android/Chrome skal notifikationer helst gå via service worker-registreringen; vi har ingen, så vi bruger den direkte og falder tilbage til lyd+vibration
-  vis();
+  try {
+    const n = new Notification('Timer færdig: '+t.titel, { body: t.kendetegn || t.handling || '', tag: 'sous-chef-'+id, renotify: true, vibrate: [300,150,300] });
+    n.onclick = () => { window.focus(); const i=trin.findIndex(x=>x.id===id); if(i>=0){ S.trin=i; gem(); visFane('madlavning'); } n.close(); };
+  } catch(e){}
 }
 setInterval(tick, 500);
 function ring(){
@@ -425,29 +468,7 @@ function ring(){
 // unlock lyd på første tryk (mobil kræver en brugerhandling)
 document.addEventListener('touchstart', function unlock(){ try{ const C=new (window.AudioContext||window.webkitAudioContext)(); C.resume(); }catch(e){} document.removeEventListener('touchstart', unlock); }, {once:true, passive:true});
 
-// ---------- OPSKRIFTER ----------
-function renderOpskrifter(){
-  const el = document.getElementById('fane-opskrifter');
-  const O = DATA.opskrifter || [];
-  if (!O.length){ el.innerHTML='<p class="note">Ingen opskrifter endnu.</p>'; return; }
-  el.innerHTML = '<nav class="opsnav">'+O.map(o=>'<a href="#ops-'+esc(o.id)+'">'+esc(o.navn)+'</a>').join('')+'</nav>' + O.map(o => {
-    let h = '<article class="ops" id="ops-'+esc(o.id)+'"><h2>'+esc(o.navn)+'</h2>';
-    if (o.antal) h += '<div class="antal">'+esc(o.antal)+'</div>';
-    if (o.ingredienser && o.ingredienser.length) h += '<h3>Ingredienser</h3><ul>'+o.ingredienser.map(i=>'<li>'+esc(i)+'</li>').join('')+'</ul>';
-    if (o.fremgangsmaade && o.fremgangsmaade.length) h += '<h3>Fremgangsmåde</h3><ol>'+o.fremgangsmaade.map(i=>'<li>'+esc(i)+'</li>').join('')+'</ol>';
-    if (o.sekvens && o.sekvens.length){
-      h += '<h3>Rækkefølgen er opskriften</h3><div class="tablewrap"><table><tr><th>#</th><th>Handling</th><th>Tid</th><th>Sådan ved du det</th></tr>';
-      h += o.sekvens.map((r,i)=>'<tr><td class="n">'+(i+1)+'</td><td>'+esc(r.handling)+'</td><td class="t">'+esc(r.tid)+'</td><td>'+esc(r.kendetegn)+'</td></tr>').join('');
-      h += '</table></div>';
-    }
-    if (o.fejlkilder && o.fejlkilder.length){
-      h += '<h3>Fejlkilder</h3>' + o.fejlkilder.map(f => '<div class="blok fejl"><b>'+esc(f.titel||'Pas på')+(f.kan_reddes===false?' - kan ikke reddes':f.kan_reddes===true?' - kan reddes':'')+'</b>'+esc(f.tekst)+'</div>').join('');
-    }
-    return h + '</article>';
-  }).join('');
-}
-
-// #indkoeb / #koekken / #opskrifter i URL'en åbner direkte på den fane (deep-link + preview-kort)
+// #indkoeb / #madlavning i URL'en åbner direkte på den fane (deep-link + preview-kort)
 const hashFane = (location.hash||'').slice(1);
 visFane(faner.includes(hashFane) ? hashFane : S.fane);
 })();
