@@ -1,10 +1,16 @@
 name: release
 
-# Når et versionstag (fx v2.0.0) pushes, pakkes skill-mappen som sous-chef.zip
-# og lægges på en GitHub-release, så den kan hentes (og downloads kan tælles).
+# Pakker skill-mappen som sous-chef.zip og lægger den på en GitHub-release, så den kan hentes
+# (og downloads kan tælles). Starter enten ved et pushet versionstag (fx v2.0.0) eller manuelt
+# fra Actions-fanen med et versionsnummer, og tagget oprettes så automatisk.
 on:
   push:
     tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Versionstag, fx v2.0.0'
+        required: true
 
 permissions:
   contents: write
@@ -19,7 +25,9 @@ jobs:
       - name: Opret release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ github.event.inputs.version || github.ref_name }}
         run: |
-          gh release create "$GITHUB_REF_NAME" sous-chef.zip \
-            --title "sous-chef $GITHUB_REF_NAME" \
+          gh release create "$VERSION" sous-chef.zip \
+            --target "$GITHUB_SHA" \
+            --title "sous-chef $VERSION" \
             --notes "Hent sous-chef.zip og upload den i Claude under Settings → Capabilities. Kræver Claude Code (Artifact-værktøjet)."
